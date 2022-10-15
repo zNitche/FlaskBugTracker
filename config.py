@@ -1,5 +1,6 @@
 import dotenv
 import os
+import multiprocessing
 
 
 dotenv.load_dotenv(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".env"))
@@ -22,3 +23,9 @@ class Config:
 
     SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://root:{MYSQL_DATABASE_PASSWORD}@{MYSQL_DATABASE_ADDRESS}/" \
                               f"{MYSQL_DATABASE_NAME}"
+
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "pool_size": multiprocessing.cpu_count() - 1 + 10,
+        "pool_recycle": 10,
+        "pool_pre_ping": True
+    }

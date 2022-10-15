@@ -7,7 +7,9 @@ def get_config():
         "MYSQL_SERVER_PORT": "3306",
         "MYSQL_SERVER_HOST": "db",
         "MYSQL_DATABASE_NAME": "app_db",
-        "MYSQL_DATABASE_PATH": "./database/mysql"
+        "MYSQL_DATABASE_PATH": "./database/mysql",
+        "BUILD_IN_ADMIN_USERNAME": "admin",
+        "BUILD_IN_ADMIN_PASSWORD": "admin321",
     }
 
     return args

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<p>
+  Login
+</p>
+<p>
+  <form action="" method="POST">
+    {{ login_form.csrf_token }}
+    <p>
+      {{ login_form.email.label }}
+      {{ login_form.email }}
+    </p>
+    <p>
+      {{ login_form.password.label }}
+      {{ login_form.password }}
+    </p>
+    <p>
+      {{ login_form.submit }}
+    </p>
+  </form>
+</p>
+
+{% endblock %}
