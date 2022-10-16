@@ -6,22 +6,9 @@
 </p>
 <p>
     <form action="{{ url_for('auth.login') }}" method="POST">
-        {{ login_form.csrf_token }}
-
-        {% for field in login_form %}
-            {% if field.type not in login_form.html_ignored_fields %}
-                <p>
-                    {{ field.label }}
-                    {{ field }}
-                </p>
-
-                {% for error in field.errors %}
-                    <p>
-                        {{ error }}
-                    </p>
-                {% endfor %}
-            {% endif %}
-        {% endfor %}
+        {% with form=login_form %}
+            {% include "components/form_component.html" %}
+        {% endwith %}
 
         <button type="submit">Login</button>
     </form>
