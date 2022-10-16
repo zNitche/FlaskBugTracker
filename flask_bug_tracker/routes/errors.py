@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for
 
 
-errors = Blueprint("errors", __name__, template_folder='template', static_folder='static')
+errors = Blueprint("errors", __name__, template_folder="templates", static_folder="static")
 
 
 @errors.app_errorhandler(404)

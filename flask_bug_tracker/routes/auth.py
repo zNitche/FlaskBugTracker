@@ -5,10 +5,10 @@ from flask_bug_tracker import models
 from flask_bug_tracker.utils import account_utils
 
 
-auth = Blueprint("auth", __name__, template_folder="template", static_folder="static")
+auth = Blueprint("auth", __name__, template_folder="templates", static_folder="static", url_prefix="/auth")
 
 
-@auth.route("/auth/login", methods=["GET", "POST"])
+@auth.route("/login", methods=["GET", "POST"])
 def login():
     if flask_login.current_user.is_authenticated:
         return redirect(url_for("content.home"))
@@ -26,10 +26,10 @@ def login():
         else:
             flash("Wrong email or/and password", "danger")
 
-    return render_template("login.html", login_form=login_form)
+    return render_template("auth/login.html", login_form=login_form)
 
 
-@auth.route("/auth/logout")
+@auth.route("/logout")
 @flask_login.login_required
 def logout():
     flask_login.logout_user()
