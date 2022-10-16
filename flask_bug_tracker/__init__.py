@@ -37,11 +37,13 @@ def init_database_data(models):
 
 
 def register_blueprints(app):
-    from flask_bug_tracker.routes import content, auth, errors
+    from flask_bug_tracker.blueprints.auth.routes import auth
+    from flask_bug_tracker.blueprints.main_app.routes import main_app
+    from flask_bug_tracker.blueprints.errors.routes import errors
 
-    app.register_blueprint(content.content)
-    app.register_blueprint(auth.auth)
-    app.register_blueprint(errors.errors)
+    app.register_blueprint(main_app)
+    app.register_blueprint(auth)
+    app.register_blueprint(errors)
 
 
 def create_app():
