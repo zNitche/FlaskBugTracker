@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<p>
+    Admin Panel - Account Registration
+</p>
+<p>
+    <form action="{{ url_for('admin.register_account') }}" method="POST">
+        {% with form=registration_form %}
+            {% include "components/form_component.html" %}
+        {% endwith %}
+
+        <button type="submit">
+            Register
+        </button>
+    </form>
+</p>
+<p>
+    <a href="{{ url_for('admin.home') }}">
+        Admin Panel
+    </a>
+</p>
+
+{% endblock %}

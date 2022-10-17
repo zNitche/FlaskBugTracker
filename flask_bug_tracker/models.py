@@ -1,15 +1,15 @@
 from flask_bug_tracker import db
 from flask_login import UserMixin
-from flask_bug_tracker.consts import PermissionGroupsConsts
+from flask_bug_tracker.consts import PermissionGroupsConsts, ValidationConsts
 
 
 class User(db.Model, UserMixin):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
-    email = db.Column(db.String(50), unique=True, nullable=True)
-    password = db.Column(db.String(128), nullable=False)
+    username = db.Column(db.String(ValidationConsts.MAX_USERNAME_LENGTH), unique=True, nullable=False)
+    email = db.Column(db.String(ValidationConsts.MAX_EMAIL_LENGTH), unique=True, nullable=True)
+    password = db.Column(db.String(128), unique=False, nullable=False)
 
     permission_group_id = db.Column(db.Integer, db.ForeignKey("permission_groups.id"), nullable=False)
 
@@ -31,3 +31,23 @@ class PermissionGroup(db.Model):
     name = db.Column(db.String(20), unique=True, nullable=False)
     users = db.relationship("User", backref="permission_group", lazy=True)
 
+    @staticmethod
+    def get_groups_names():
+        groups = PermissionGroup.query.all()
+
+        names = [group.name for group in groups]
+
+        return names
+
+    @staticmethod
+    def get_group_by_name(name):
+        groups = PermissionGroup.query.all()
+        group = None
+
+        for g in groups:
+            if g.name == name:
+                group = g
+
+                break
+
+        return group
