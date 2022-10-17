@@ -23,26 +23,14 @@ def init_migrations(app):
     flask_migrate.upgrade(migrations_dir_path)
 
 
-def init_database_data(models):
+def init_database_data():
     from flask_bug_tracker.utils import db_utils, account_utils
 
-    if len(models.PermissionGroup.query.all()) == 0:
-        user_group = models.PermissionGroup(name=PermissionGroupsConsts.USER_GROUP)
-        admin_group = models.PermissionGroup(name=PermissionGroupsConsts.ADMIN_GROUP)
+    admin_username = os.environ.get("BUILD_IN_ADMIN_USERNAME")
+    admin_password = os.environ.get("BUILD_IN_ADMIN_PASSWORD")
 
-        db_utils.add_object_to_db(user_group)
-        db_utils.add_object_to_db(admin_group)
-
-    if len(models.User.query.all()) == 0:
-        admin_username = os.environ.get("BUILD_IN_ADMIN_USERNAME")
-        admin_password = os.environ.get("BUILD_IN_ADMIN_PASSWORD")
-
-        admin_password = account_utils.hash_password(admin_password)
-
-        admin = models.User(username=admin_username, email=admin_username, password=admin_password,
-                            permission_group_id=PermissionGroupsConsts.ADMIN_GROUP_ID)
-
-        db_utils.add_object_to_db(admin)
+    account_utils.init_buildin_permissions_groups()
+    account_utils.init_buildin_account(admin_username, admin_password)
 
 
 def register_blueprints(app):
@@ -77,7 +65,7 @@ def create_app():
     with app.app_context():
         db.create_all()
 
-        init_database_data(models)
+        init_database_data()
 
         init_migrations(app)
         register_blueprints(app)
