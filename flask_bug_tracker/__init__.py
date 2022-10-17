@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 import flask_migrate
 import flask_login
 import os
+from flask_bug_tracker.consts import PermissionGroupsConsts
 
 
 db = SQLAlchemy()
@@ -25,13 +26,21 @@ def init_migrations(app):
 def init_database_data(models):
     from flask_bug_tracker.utils import db_utils, account_utils
 
+    if len(models.PermissionGroup.query.all()) == 0:
+        user_group = models.PermissionGroup(name=PermissionGroupsConsts.USER_GROUP)
+        admin_group = models.PermissionGroup(name=PermissionGroupsConsts.ADMIN_GROUP)
+
+        db_utils.add_object_to_db(user_group)
+        db_utils.add_object_to_db(admin_group)
+
     if len(models.User.query.all()) == 0:
         admin_username = os.environ.get("BUILD_IN_ADMIN_USERNAME")
         admin_password = os.environ.get("BUILD_IN_ADMIN_PASSWORD")
 
         admin_password = account_utils.hash_password(admin_password)
 
-        admin = models.User(username=admin_username, email=admin_username, password=admin_password)
+        admin = models.User(username=admin_username, email=admin_username, password=admin_password,
+                            permission_group_id=PermissionGroupsConsts.ADMIN_GROUP_ID)
 
         db_utils.add_object_to_db(admin)
 
@@ -40,9 +49,11 @@ def register_blueprints(app):
     from flask_bug_tracker.blueprints.auth.routes import auth
     from flask_bug_tracker.blueprints.main_app.routes import main_app
     from flask_bug_tracker.blueprints.errors.routes import errors
+    from flask_bug_tracker.blueprints.admin.routes import admin
 
     app.register_blueprint(main_app)
     app.register_blueprint(auth)
+    app.register_blueprint(admin)
     app.register_blueprint(errors)
 
 

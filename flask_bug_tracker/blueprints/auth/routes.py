@@ -3,6 +3,7 @@ import flask_login
 from flask_bug_tracker.app_modules import forms
 from flask_bug_tracker import models
 from flask_bug_tracker.utils import account_utils
+from flask_bug_tracker.consts import SystemMessagesConst, FlashConsts
 
 
 auth = Blueprint("auth", __name__, template_folder="templates", static_folder="static", url_prefix="/auth")
@@ -24,7 +25,7 @@ def login():
             return redirect(url_for("main_app.home"))
 
         else:
-            flash("Wrong email or/and password", "danger")
+            flash(SystemMessagesConst.LOGIN_ERROR, FlashConsts.FLASH_DANGER)
 
     return render_template("login.html", login_form=login_form)
 
