@@ -1,13 +1,13 @@
 from functools import wraps
-from flask import request, redirect, url_for, abort
+from flask import abort
 import flask_login
 
 
 def admin_required(func):
     @wraps(func)
     def decorated_function(*args, **kwargs):
-        if False:
-            abort(404)
+        if not flask_login.current_user.is_admin():
+            abort(403)
 
         return func(*args, **kwargs)
 

@@ -23,3 +23,8 @@ def error_405(error):
 def error_401(error):
     return redirect(url_for("auth.login"))
 
+
+@errors.app_errorhandler(403)
+def error_403(error):
+    return render_template("error.html", error=error)
+

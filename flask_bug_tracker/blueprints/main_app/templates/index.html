@@ -2,15 +2,22 @@
 {% block content %}
 
 <p>
-  Hello World {{ current_user.username }}
+    Hello World {{ current_user.username }}
 </p>
 <p>
-  Permission Group: {{ current_user.get_permission_group_name() }}
+    Permission Group: {{ current_user.get_permission_group_name() }}
 </p>
+{% if current_user.is_admin() %}
+    <p>
+        <a href="{{ url_for('admin.home') }}">
+            Admin
+        </a>
+    </p>
+{% endif %}
 <p>
-  <a href="{{ url_for('auth.logout') }}">
-    Logout
-  </a>
+    <a href="{{ url_for('auth.logout') }}">
+        Logout
+    </a>
 </p>
 
 {% endblock %}

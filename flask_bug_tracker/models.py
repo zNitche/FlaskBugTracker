@@ -1,5 +1,6 @@
 from flask_bug_tracker import db
 from flask_login import UserMixin
+from flask_bug_tracker.consts import PermissionGroupsConsts
 
 
 class User(db.Model, UserMixin):
@@ -16,6 +17,11 @@ class User(db.Model, UserMixin):
         group = PermissionGroup.query.filter_by(id=self.permission_group_id).first()
 
         return group.name
+
+    def is_admin(self):
+        status = True if self.get_permission_group_name() == PermissionGroupsConsts.ADMIN_GROUP else False
+
+        return status
 
 
 class PermissionGroup(db.Model):
