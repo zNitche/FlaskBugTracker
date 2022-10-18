@@ -1,17 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
 
-<p>
-    Login
-</p>
-<p>
-    <form action="{{ url_for('auth.login') }}" method="POST">
-        {% with form=login_form %}
-            {% include "components/form_component.html" %}
-        {% endwith %}
+<div class="main-container">
+    <div class="app-name-container">
+        Flask Bug Tracker (FBT)
+    </div>
+    <div class="horizontal-centered-container">
+        <div class="vertical-centered-container">
+            <div class="login-container">
+                <div class="login-header">
+                    Login
+                </div>
+                <div class="login-form">
+                    <form action="{{ url_for('auth.login') }}" method="POST">
+                        {% with form=login_form %}
+                            {% include "components/form_component.html" %}
+                        {% endwith %}
 
-        <button type="submit">Login</button>
-    </form>
-</p>
+                        <button class="login-submit-button" type="submit">
+                            Login
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
