@@ -29,3 +29,5 @@ class Config:
         "pool_recycle": 10,
         "pool_pre_ping": True
     }
+
+    APP_VERSION = "v0.1"

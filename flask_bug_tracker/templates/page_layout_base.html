@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="main-container">
+    <div class="horizontal-centered-container">
+        <div class="navbar">
+            <div class="navbar-container">
+                <div class="navbar-header">
+                    <a href="{{ url_for('main_app.home') }}">
+                        FBT
+                    </a>
+                </div>
+                <div class="navbar-item">
+                    <a onclick="toggleNavbarDropdown()">
+                        Navigation
+                    </a>
+                </div>
+                <div class="navbar-item">
+                    <a href="{{ url_for('auth.logout') }}">
+                        Logout
+                    </a>
+                </div>
+            </div>
+            <div class="nav-dropdown" id="nav-dropdown">
+                <div class="nav-dropdown-item">
+                    <a href="#">Projects</a>
+                </div>
+                <div class="nav-dropdown-item">
+                    <a href="#">Issues</a>
+                </div>
+                {% if current_user.is_admin() %}
+                    <div class="nav-dropdown-item">
+                        <a href="{{ url_for('admin.home') }}" target="_blank">
+                            Admin Panel
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="content-container">
+            {% block page_content %}
+            {% endblock %}
+        </div>
+        <div class="footer-container">
+            <div class="footer-item">
+                Powered By Flask
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

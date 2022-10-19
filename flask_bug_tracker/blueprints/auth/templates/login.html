@@ -2,14 +2,14 @@
 {% block content %}
 
 <div class="main-container">
-    <div class="app-name-container">
-        Flask Bug Tracker (FBT)
+    <div class="app-version-container">
+        {{ config['APP_VERSION'] }}
     </div>
     <div class="horizontal-centered-container">
         <div class="vertical-centered-container">
             <div class="login-container">
                 <div class="login-header">
-                    Login
+                    Flask Bug Tracker (FBT)
                 </div>
                 <div class="login-form">
                     <form action="{{ url_for('auth.login') }}" method="POST">
