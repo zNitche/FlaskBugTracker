@@ -2,7 +2,7 @@
 {% block page_content %}
 
 {% for user in users %}
-    <a href="{{ url_for('admin.update_user', user_id=user.id) }}" class="content-item-button">
+    <a href="{{ url_for('admin.preview_user', user_id=user.id) }}" class="content-item-button">
         <div class="content-item content-item-unaligned">
             <div class="item-content item-content-unaligned">
                 <span>
