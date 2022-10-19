@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SelectField
-from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, Optional
 from flask_bug_tracker.consts import ValidationConsts, SystemMessagesConst
 from flask_bug_tracker import models
 
@@ -26,11 +26,11 @@ class RegistrationForm(FormBase):
                                              Length(min=ValidationConsts.MIN_EMAIL_LENGTH,
                                                     max=ValidationConsts.MAX_EMAIL_LENGTH)])
 
-    password = PasswordField("Password", validators=[DataRequired(),
-                                                     Length(min=ValidationConsts.MIN_PASSWORD_LENGTH,
-                                                            max=ValidationConsts.MAX_PASSWORD_LENGTH)])
+    password = PasswordField("Password (optional)", validators=[Optional(),
+                                                                Length(min=ValidationConsts.MIN_PASSWORD_LENGTH,
+                                                                       max=ValidationConsts.MAX_PASSWORD_LENGTH)])
 
-    confirm_password = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo("password")])
+    confirm_password = PasswordField("Confirm Password (optional)", validators=[EqualTo("password")])
 
     permission_group = SelectField("Permission Group", choices=models.PermissionGroup.get_groups_names())
 

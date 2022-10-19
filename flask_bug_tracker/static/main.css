@@ -87,11 +87,11 @@ body {
 .form-errors {
     display: flex;
     flex-direction: column;
-    color: red;
+    color: #e03116;;
 }
 
 .form-error {
-    padding: 10px;
+    padding: 5px;
 }
 
 .displayed {

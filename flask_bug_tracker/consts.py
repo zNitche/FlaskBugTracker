@@ -3,7 +3,7 @@ class SystemMessagesConst:
     EMAIL_TAKEN = "Email taken"
     USERNAME_TAKEN = "Username taken"
     PERMISSION_GROUP_DOESNT_EXIST = "Permission Group doesn't exist"
-    ACCOUNT_CREATED = "Account {name} created"
+    ACCOUNT_CREATED = "Account {name} has been created"
 
 
 class FlashConsts:

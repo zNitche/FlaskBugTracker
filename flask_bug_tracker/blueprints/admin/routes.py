@@ -39,6 +39,8 @@ def register_account():
         password = registration_form.password.data
         permission_group = registration_form.permission_group.data
 
+        password = password if password is not "" else account_utils.generate_random_password()
+
         password_hash = account_utils.hash_password(password)
         permission_group_id = models.PermissionGroup.get_group_by_name(permission_group).id
 

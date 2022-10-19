@@ -1,4 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
+import uuid
 from flask_bug_tracker import models
 from flask_bug_tracker.consts import PermissionGroupsConsts
 from flask_bug_tracker.utils import db_utils
@@ -10,6 +11,12 @@ def hash_password(password):
 
 def compare_password_with_hash(password, password_hash):
     return check_password_hash(password_hash, password)
+
+
+def generate_random_password():
+    password = str(uuid.uuid4().hex)
+
+    return password
 
 
 def init_buildin_account(username, password):
