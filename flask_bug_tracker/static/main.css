@@ -84,6 +84,16 @@ body {
     width: 100%;
 }
 
+.form-errors {
+    display: flex;
+    flex-direction: column;
+    color: red;
+}
+
+.form-error {
+    padding: 10px;
+}
+
 .displayed {
     display: flex !important;
 }
@@ -241,6 +251,27 @@ body {
 
 .login-submit-button:hover {
     background-color: #48995c;
+}
+
+.flashed-messages-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.flashed-message-container {
+    padding: 10px;
+    font-size: 120%;
+    color: #ffffff;
+    text-align: center;
+}
+
+.flashed-message-container-danger {
+    background-color: #e03116;
+}
+
+.flashed-message-container-success {
+    background-color: #2bde10;
 }
 
 

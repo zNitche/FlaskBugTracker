@@ -9,6 +9,7 @@ class SystemMessagesConst:
 class FlashConsts:
     FLASH_DANGER = "danger"
     FLASH_INFO = "info"
+    FLASH_SUCCESS = "success"
 
 
 class PermissionGroupsConsts:

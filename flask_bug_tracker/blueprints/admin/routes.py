@@ -47,7 +47,7 @@ def register_account():
 
         db_utils.add_object_to_db(user)
 
-        flash(SystemMessagesConst.ACCOUNT_CREATED.format(name=username), FlashConsts.FLASH_INFO)
+        flash(SystemMessagesConst.ACCOUNT_CREATED.format(name=username), FlashConsts.FLASH_SUCCESS)
 
     return render_template("register_account.html", registration_form=registration_form)
 
