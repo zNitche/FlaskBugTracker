@@ -2,11 +2,18 @@
 {% block page_content %}
 
 {% for user in users %}
-    <div class="content-item">
-        <div class="item-content">
-            {{ user.username }}
+    <a href="{{ url_for('admin.update_user', user_id=user.id) }}" class="content-item-button">
+        <div class="content-item content-item-unaligned">
+            <div class="item-content item-content-unaligned">
+                <span>
+                    {{ user.username }}
+                </span>
+                <span>
+                    {{ user.email }}
+                </span>
+            </div>
         </div>
-    </div>
+    </a>
 {% endfor %}
 
 {% endblock %}

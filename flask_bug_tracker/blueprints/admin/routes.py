@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, url_for
+from flask import Blueprint, render_template, flash, url_for, abort, request
 import flask_login
 from flask_bug_tracker.app_modules import decorators, forms
 from flask_bug_tracker import models
@@ -61,3 +61,40 @@ def users_preview():
     users = models.User.query.all()
 
     return render_template("users.html", users=users)
+
+
+@admin.route("/users/<user_id>", methods=["GET", "POST"])
+@flask_login.login_required
+@decorators.admin_required
+def update_user(user_id):
+    user = models.User.query.filter_by(id=user_id).first()
+
+    if user:
+        update_user_form = forms.UpdateUserForm(user.id)
+
+        if request.method == "POST":
+            if update_user_form.validate_on_submit():
+                user.username = update_user_form.username.data
+                user.email = update_user_form.email.data
+
+                permission_group = update_user_form.permission_group.data
+                permission_group_id = models.PermissionGroup.get_group_by_name(permission_group).id
+
+                user.permission_group_id = permission_group_id
+
+                db_utils.commit_session()
+
+                flash(SystemMessagesConst.ACCOUNT_UPDATED, FlashConsts.FLASH_SUCCESS)
+
+            else:
+                flash(SystemMessagesConst.ERROR_WHILE_UPDATING_ACCOUNT, FlashConsts.FLASH_DANGER)
+
+        else:
+            update_user_form.username.data = user.username
+            update_user_form.email.data = user.email
+            update_user_form.permission_group.data = user.get_permission_group_name()
+
+        return render_template("user.html", user=user, update_user_form=update_user_form)
+
+    else:
+        abort(404)

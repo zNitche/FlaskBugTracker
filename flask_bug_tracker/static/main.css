@@ -179,6 +179,14 @@ body {
     border-radius: 10px;
 }
 
+.content-item-unaligned {
+    align-items: normal
+}
+
+.content-item span:last-child {
+    margin-left: auto;
+}
+
 .content-item-button {
     width: 100%;
     text-decoration: none;
@@ -192,6 +200,12 @@ body {
     background-color: #ededed;
     margin-bottom: 10px;
     border-radius: 10px;
+}
+
+.item-content-unaligned {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .content-item-button .content-item:hover {

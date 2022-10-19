@@ -4,6 +4,8 @@ class SystemMessagesConst:
     USERNAME_TAKEN = "Username taken"
     PERMISSION_GROUP_DOESNT_EXIST = "Permission Group doesn't exist"
     ACCOUNT_CREATED = "Account {name} has been created"
+    ACCOUNT_UPDATED = "Account has been updated successfully"
+    ERROR_WHILE_UPDATING_ACCOUNT = "Error while updating account details"
 
 
 class FlashConsts:
