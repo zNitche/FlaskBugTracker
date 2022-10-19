@@ -1,0 +1,12 @@
+{% extends "page_layout_base.html" %}
+{% block page_content %}
+
+{% for user in users %}
+    <div class="content-item">
+        <div class="item-content">
+            {{ user.username }}
+        </div>
+    </div>
+{% endfor %}
+
+{% endblock %}

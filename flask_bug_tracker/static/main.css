@@ -42,7 +42,6 @@ body {
     padding: 20px;
     background-color: #dfe2e8;
     border-radius: 10px;
-    width: 25%;
 }
 
 .login-container input {
@@ -74,6 +73,15 @@ body {
 .login-header {
     font-size: 200%;
     margin-bottom: 10px;
+}
+
+.login-form .form-inputs {
+    margin-bottom: 20px;
+}
+
+.form-inputs .form-input {
+    margin-bottom: 10px;
+    width: 100%;
 }
 
 .displayed {
@@ -161,8 +169,23 @@ body {
     border-radius: 10px;
 }
 
-.content-item a {
+.content-item-button {
+    width: 100%;
+    text-decoration: none;
     color: #000000;
+}
+
+.content-item-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ededed;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.content-item-button .content-item:hover {
+    background-color: #f7f1f1;
 }
 
 .footer-container {
@@ -189,7 +212,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .admin-form input {

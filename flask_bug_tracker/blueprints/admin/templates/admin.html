@@ -1,12 +1,12 @@
 {% extends "page_layout_base.html" %}
 {% block page_content %}
 
-<div class="content-item">
-    <div class="item-content">
-        <a href="{{ url_for('admin.register_account') }}">
-            Register account
-        </a>
-    </div>
-</div>
+{% for option in admin_options %}
+    <a class="content-item-button" href="{{ option['url'] }}">
+        <div class="content-item">
+            {{ option["content"] }}
+        </div>
+    </a>
+{% endfor %}
 
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash
+from flask import Blueprint, render_template, flash, url_for
 import flask_login
 from flask_bug_tracker.app_modules import decorators, forms
 from flask_bug_tracker import models
@@ -13,7 +13,18 @@ admin = Blueprint("admin", __name__, template_folder="templates", static_folder=
 @flask_login.login_required
 @decorators.admin_required
 def home():
-    return render_template("admin.html")
+    admin_options = [
+        {
+            "content": "Accounts Registration",
+            "url": url_for('admin.register_account')
+        },
+        {
+            "content": "Users Management",
+            "url": url_for('admin.users_preview')
+        }
+    ]
+
+    return render_template("admin.html", admin_options=admin_options)
 
 
 @admin.route("/register_account", methods=["GET", "POST"])
@@ -39,3 +50,12 @@ def register_account():
         flash(SystemMessagesConst.ACCOUNT_CREATED.format(name=username), FlashConsts.FLASH_INFO)
 
     return render_template("register_account.html", registration_form=registration_form)
+
+
+@admin.route("/users", methods=["GET"])
+@flask_login.login_required
+@decorators.admin_required
+def users_preview():
+    users = models.User.query.all()
+
+    return render_template("users.html", users=users)
