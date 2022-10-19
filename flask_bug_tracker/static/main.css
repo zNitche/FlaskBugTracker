@@ -122,7 +122,7 @@ body {
 }
 
 .navbar-container {
-    width: 60%;
+    width: 50%;
     display: flex;
     flex-direction: row;
     min-height: 50px;
@@ -144,7 +144,7 @@ body {
 .content-container {
     display: flex;
     flex-direction: column;
-    width: 60%;
+    width: 50%;
     align-items: center;
     margin-top: 60px;
     margin-bottom: 40px;
@@ -161,6 +161,10 @@ body {
     border-radius: 10px;
 }
 
+.content-item a {
+    color: #000000;
+}
+
 .footer-container {
     width: 100%;
     padding: 10px;
@@ -175,6 +179,45 @@ body {
 
 .footer-item {
 
+}
+
+.admin-form {
+
+}
+
+.admin-form .form-inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.admin-form input {
+    width: 100%;
+    padding: 12px 20px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ccc;
+    box-sizing: border-box;
+}
+
+.admin-form select {
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+}
+
+.admin-form button[type="submit"] {
+    background-color: #5abf73;
+    padding: 10px 0px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    color: #ffffff;
+}
+
+.login-submit-button:hover {
+    background-color: #48995c;
 }
 
 

@@ -7,15 +7,15 @@
                 <label for='{{ field.label }}'>
                     {{ field.label }}
                 </label>
-                <p>
+                <span>
                     {{ field }}
-                </p>
+                </span>
             </div>
             <div class="form-errors">
                 {% for error in field.errors %}
-                    <p>
+                    <span>
                         {{ error }}
-                    </p>
+                    </span>
                 {% endfor %}
             </div>
         {% endif %}

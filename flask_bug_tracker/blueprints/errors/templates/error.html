@@ -1,8 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
 
-<p>
-  {{ error }}
-</p>
+<div class="main-container">
+    <div class="app-version-container">
+        {{ config['APP_VERSION'] }}
+    </div>
+    <div class="horizontal-centered-container">
+        <div class="vertical-centered-container">
+            <div class="login-container">
+                <span>
+                    {{ error }}
+                </span>
+                <span>
+                    <a href="{{ url_for('main_app.home') }}">
+                        Go Home
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
