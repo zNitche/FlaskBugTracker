@@ -1,23 +1,55 @@
 {% extends "base.html" %}
 {% block content %}
 
-<p>
-    Hello World {{ current_user.username }}
-</p>
-<p>
-    Permission Group: {{ current_user.get_permission_group_name() }}
-</p>
-{% if current_user.is_admin() %}
-    <p>
-        <a href="{{ url_for('admin.home') }}">
-            Admin
-        </a>
-    </p>
-{% endif %}
-<p>
-    <a href="{{ url_for('auth.logout') }}">
-        Logout
-    </a>
-</p>
+<div class="main-container">
+    <div class="horizontal-centered-container">
+        <div class="navbar">
+            <div class="navbar-container">
+                <div class="navbar-header">
+                    <a href="{{ url_for('main_app.home') }}">
+                        FBT
+                    </a>
+                </div>
+                <div class="navbar-item">
+                    <a onclick="toggleNavbarDropdown()">
+                        Navigation
+                    </a>
+                </div>
+                <div class="navbar-item">
+                    <a href="{{ url_for('auth.logout') }}">
+                        Logout
+                    </a>
+                </div>
+            </div>
+            <div class="nav-dropdown" id="nav-dropdown">
+                <div class="nav-dropdown-item">
+                    <a href="#">Projects</a>
+                </div>
+                <div class="nav-dropdown-item">
+                    <a href="#">Issues</a>
+                </div>
+                {% if current_user.is_admin() %}
+                    <div class="nav-dropdown-item">
+                        <a href="{{ url_for('admin.home') }}" target="_blank">
+                            Admin Panel
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="content-container">
+            {% for _ in range(1) %}
+                <div class="content-item">
+                    Content Item
+                </div>
+            {% endfor %}
+        </div>
+        <div class="footer-container">
+            <div class="footer-item">
+                Powered By Flask
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
