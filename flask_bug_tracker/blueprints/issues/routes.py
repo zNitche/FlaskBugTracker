@@ -74,7 +74,17 @@ def update_issue(issue_id):
 @issues.route("/issue/<issue_id>/remove", methods=["POST"])
 @flask_login.login_required
 def remove_issue(issue_id):
-    abort(404)
+    issue = models.Issue.query.filter_by(id=issue_id).first()
+
+    if issue and issue.owner_id == flask_login.current_user.id:
+        db_utils.remove_object_from_db(issue)
+
+        flash(SystemMessagesConst.ISSUE_REMOVED, FlashConsts.FLASH_SUCCESS)
+
+        return redirect(url_for("issues.preview_issues"))
+
+    else:
+        abort(404)
 
 
 @issues.route("/add", methods=["GET", "POST"])

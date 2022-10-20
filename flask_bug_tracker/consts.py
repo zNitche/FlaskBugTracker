@@ -15,6 +15,7 @@ class SystemMessagesConst:
     ISSUE_REMOVED_SUCCESSFULLY = "Issue has been removed successfully"
     ISSUE_WHILE_UPDATING_ACCOUNT = "Error while updating issue details"
     ERROR_WHILE_UPDATING_ISSUE = "Error while updating issue details"
+    ISSUE_REMOVED = "Issue has been removed successfully"
 
 
 class FlashConsts:
