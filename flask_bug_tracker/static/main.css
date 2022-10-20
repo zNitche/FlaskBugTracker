@@ -330,7 +330,7 @@ button[type="submit"] {
 }
 
 
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 1000px) {
   .login-container {
     width: 40%;
     margin: 5%;

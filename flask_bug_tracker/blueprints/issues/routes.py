@@ -26,10 +26,11 @@ def preview_issue(issue_id):
     issue = models.Issue.query.filter_by(id=issue_id).first()
 
     if issue:
-        issue_form = forms.AddIssueForm()
+        issue_form = forms.UpdateIssueForm()
 
         issue_form.title.data = issue.title
         issue_form.content.data = issue.content
+        issue_form.status.data = issue.status
 
         issue_form.assigned_to_user_name.choices = [user.username for user in models.User.query.all()]
         issue_form.assigned_to_user_name.data = issue.get_assigned_to_user_name()
@@ -46,7 +47,7 @@ def update_issue(issue_id):
     issue = models.Issue.query.filter_by(id=issue_id).first()
 
     if issue and issue.owner_id == flask_login.current_user.id:
-        issue_form = forms.AddIssueForm()
+        issue_form = forms.UpdateIssueForm()
 
         issue_form.assigned_to_user_name.choices = [user.username for user in models.User.query.all()]
 
@@ -54,6 +55,7 @@ def update_issue(issue_id):
             issue.title = issue_form.title.data
             issue.content = issue_form.content.data
             issue.last_updated = datetime.utcnow()
+            issue.status = issue_form.status.data
 
             issue.assigned_to_user_id = \
                 models.User.query.filter_by(username=issue_form.assigned_to_user_name.data).first().id

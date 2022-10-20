@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, Optional
-from flask_bug_tracker.consts import ValidationConsts, SystemMessagesConst
+from flask_bug_tracker.consts import ValidationConsts, SystemMessagesConst, IssuesConsts
 from flask_bug_tracker import models
 
 
@@ -30,6 +30,14 @@ class UserValidationMixin:
 
         if not permission_group:
             raise ValidationError(SystemMessagesConst.PERMISSION_GROUP_DOESNT_EXIST)
+
+
+class IssuesValidationMixin:
+    def validate_assigned_to_user_name(self, assigned_to_user_name):
+        user = models.User.query.filter_by(username=assigned_to_user_name.data).first()
+
+        if not user:
+            raise ValidationError(SystemMessagesConst.USER_DOESNT_EXIST)
 
 
 class LoginForm(FormBase):
@@ -84,7 +92,7 @@ class UpdateUserForm(FormBase, UserValidationMixin):
             raise ValidationError(SystemMessagesConst.EMAIL_TAKEN)
 
 
-class AddIssueForm(FormBase):
+class AddIssueForm(FormBase, IssuesValidationMixin):
     title = StringField("Title", validators=[DataRequired(),
                                              Length(min=ValidationConsts.MIN_ISSUE_NAME_LENGTH,
                                                     max=ValidationConsts.MAX_ISSUE_NAME_LENGTH)])
@@ -95,8 +103,16 @@ class AddIssueForm(FormBase):
 
     assigned_to_user_name = SelectField("Assign To", choices=[])
 
-    def validate_assigned_to_user_name(self, assigned_to_user_name):
-        user = models.User.query.filter_by(username=assigned_to_user_name.data).first()
 
-        if not user:
-            raise ValidationError(SystemMessagesConst.USER_DOESNT_EXIST)
+class UpdateIssueForm(FormBase, IssuesValidationMixin):
+    title = StringField("Title", validators=[DataRequired(),
+                                             Length(min=ValidationConsts.MIN_ISSUE_NAME_LENGTH,
+                                                    max=ValidationConsts.MAX_ISSUE_NAME_LENGTH)])
+
+    content = TextAreaField("Content", validators=[DataRequired(),
+                                                   Length(min=ValidationConsts.MIN_ISSUE_CONTENT_LENGTH,
+                                                          max=ValidationConsts.MAX_ISSUE_CONTENT_LENGTH)])
+
+    status = SelectField("Status", choices=IssuesConsts.ISSUES_STATUS_TYPES)
+
+    assigned_to_user_name = SelectField("Assign To", choices=[])

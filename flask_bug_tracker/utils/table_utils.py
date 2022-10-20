@@ -19,7 +19,7 @@ def get_data_table_data_struct_for_users(users):
 
 
 def get_data_table_data_struct_for_issues(issues):
-    headers = ["ID", "Title", "Owner", "Assigned to", "Date", "Last Update"]
+    headers = ["ID", "Title", "Owner", "Assigned to", "Date", "Last Update", "Status"]
     issues_struct = {}
 
     for issue in issues:
@@ -29,7 +29,8 @@ def get_data_table_data_struct_for_issues(issues):
             issue.get_owner_name(),
             issue.get_assigned_to_user_name(),
             issue.date,
-            issue.last_updated
+            issue.last_updated,
+            issue.status
         ]
 
     struct = {

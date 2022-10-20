@@ -32,6 +32,15 @@ class PermissionGroupsConsts:
     ADMIN_GROUP_ID = 2
 
 
+class IssuesConsts:
+    ISSUE_COMPLETED = "Completed"
+    ISSUE_CANCELLED = "Cancelled"
+    ISSUE_TODO = "ToDo"
+    ISSUE_IN_PROGRESS = "In progress"
+
+    ISSUES_STATUS_TYPES = [ISSUE_TODO, ISSUE_IN_PROGRESS, ISSUE_COMPLETED, ISSUE_CANCELLED]
+
+
 class ValidationConsts:
     MIN_USERNAME_LENGTH = 2
     MAX_USERNAME_LENGTH = 20
