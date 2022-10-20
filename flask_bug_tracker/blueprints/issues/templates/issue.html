@@ -4,12 +4,12 @@
 <div class="content-item">
     <div class="item-header">
         <h2>
-            User: {{ user.username }} {{ " (You)" if current_user.id == user.id else "" }}
+            Issue: #{{ issue.id }}
         </h2>
     </div>
     <div class="item-content">
-        <form class="default-form" action="{{ url_for('admin.update_user', user_id=user.id) }}" method="POST">
-            {% with form=update_user_form %}
+        <form class="default-form" action="{{ url_for('issues.update_issue', issue_id=issue.id) }}" method="POST">
+            {% with form=issue_form %}
                 {% include "components/form_component.html" %}
             {% endwith %}
 
@@ -17,8 +17,8 @@
                 Update
             </button>
         </form>
-        {% if current_user.id != user.id %}
-            <form class="default-form" action="{{ url_for('admin.remove_user', user_id=user.id) }}" method="POST">
+        {% if current_user.id != issue.owner %}
+            <form class="default-form" action="{{ url_for('issues.remove_issue', issue_id=issue.id) }}" method="POST">
                 <button class="form-remove-button" type="submit">
                     Remove
                 </button>

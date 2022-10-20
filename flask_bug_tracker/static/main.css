@@ -232,22 +232,28 @@ body {
 
 }
 
-.admin-form {
+.default-form {
     margin-bottom: 20px;
 }
 
-.admin-form:last-child {
+.default-form:last-child {
     margin-bottom: 0px;
 }
 
-.admin-form .form-inputs {
+.form-input textarea {
+    width: 100%;
+    height: 150px;
+    resize: none;
+}
+
+.default-form .form-inputs {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
 }
 
-.admin-form input {
+.default-form input {
     width: 100%;
     padding: 12px 20px;
     border-width: 1px;
@@ -256,7 +262,7 @@ body {
     box-sizing: border-box;
 }
 
-.admin-form select {
+.default-form select {
     width: 100%;
     text-align: center;
     padding: 5px;

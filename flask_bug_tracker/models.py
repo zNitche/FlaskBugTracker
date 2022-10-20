@@ -63,6 +63,7 @@ class Issue(db.Model):
     title = db.Column(db.String(ValidationConsts.MAX_USERNAME_LENGTH), unique=True, nullable=False)
     content = db.Column(db.String(ValidationConsts.MAX_EMAIL_LENGTH), unique=True, nullable=True)
     date = db.Column(db.DateTime, unique=False, nullable=False, default=datetime.utcnow)
+    last_updated = db.Column(db.DateTime, unique=False, nullable=True, default=datetime.utcnow)
 
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     assigned_to_user_id = db.Column(db.Integer, unique=False, nullable=True, default=None)

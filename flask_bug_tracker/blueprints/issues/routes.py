@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, request
+from flask import Blueprint, render_template, flash, redirect, url_for, request, abort
 import flask_login
+from datetime import datetime
 from flask_bug_tracker import models
 from flask_bug_tracker.app_modules import forms
 from flask_bug_tracker.utils import db_utils, table_utils
@@ -17,6 +18,63 @@ def preview_issues():
     table_struct = table_utils.get_data_table_data_struct_for_issues(issues)
 
     return render_template("issues.html", table_struct=table_struct)
+
+
+@issues.route("/issue/<issue_id>", methods=["GET"])
+@flask_login.login_required
+def preview_issue(issue_id):
+    issue = models.Issue.query.filter_by(id=issue_id).first()
+
+    if issue:
+        issue_form = forms.AddIssueForm()
+
+        issue_form.title.data = issue.title
+        issue_form.content.data = issue.content
+
+        issue_form.assigned_to_user_name.choices = [user.username for user in models.User.query.all()]
+        issue_form.assigned_to_user_name.data = issue.get_assigned_to_user_name()
+
+        return render_template("issue.html", issue=issue, issue_form=issue_form)
+
+    else:
+        abort(404)
+
+
+@issues.route("/issue/<issue_id>/update", methods=["POST"])
+@flask_login.login_required
+def update_issue(issue_id):
+    issue = models.Issue.query.filter_by(id=issue_id).first()
+
+    if issue and issue.owner_id == flask_login.current_user.id:
+        issue_form = forms.AddIssueForm()
+
+        issue_form.assigned_to_user_name.choices = [user.username for user in models.User.query.all()]
+
+        if issue_form.validate_on_submit():
+            issue.title = issue_form.title.data
+            issue.content = issue_form.content.data
+            issue.last_updated = datetime.utcnow()
+
+            issue.assigned_to_user_id = \
+                models.User.query.filter_by(username=issue_form.assigned_to_user_name.data).first().id
+
+            db_utils.commit_session()
+
+            flash(SystemMessagesConst.ISSUE_UPDATED, FlashConsts.FLASH_SUCCESS)
+
+        else:
+            flash(SystemMessagesConst.ERROR_WHILE_UPDATING_ISSUE, FlashConsts.FLASH_DANGER)
+
+        return redirect(url_for("issues.preview_issue", issue_id=issue_id))
+
+    else:
+        abort(404)
+
+
+@issues.route("/issue/<issue_id>/remove", methods=["POST"])
+@flask_login.login_required
+def remove_issue(issue_id):
+    abort(404)
 
 
 @issues.route("/add", methods=["GET", "POST"])

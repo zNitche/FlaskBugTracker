@@ -8,7 +8,7 @@
         </h2>
     </div>
     <div class="item-content">
-        <form action="{{ url_for('admin.register_account') }}" method="POST" class="admin-form">
+        <form action="{{ url_for('admin.register_account') }}" method="POST" class="default-form">
             {% with form=registration_form %}
                 {% include "components/form_component.html" %}
             {% endwith %}

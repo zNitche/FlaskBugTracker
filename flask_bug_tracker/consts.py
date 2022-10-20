@@ -8,8 +8,13 @@ class SystemMessagesConst:
     ACCOUNT_REMOVED_SUCCESSFULLY = "Account has been removed successfully"
     ERROR_WHILE_UPDATING_ACCOUNT = "Error while updating account details"
     USER_DOESNT_EXIST = "User doesnt exist"
+
     ADDED_ISSUE = "Issue has been added successfully"
     ERROR_WHILE_ADDING_ISSUE = "Error while adding issue"
+    ISSUE_UPDATED = "Issue has been updated successfully"
+    ISSUE_REMOVED_SUCCESSFULLY = "Issue has been removed successfully"
+    ISSUE_WHILE_UPDATING_ACCOUNT = "Error while updating issue details"
+    ERROR_WHILE_UPDATING_ISSUE = "Error while updating issue details"
 
 
 class FlashConsts:
