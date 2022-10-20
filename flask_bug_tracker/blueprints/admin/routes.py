@@ -111,3 +111,20 @@ def update_user(user_id):
 
     else:
         abort(404)
+
+
+@admin.route("/users/<user_id>/remove", methods=["POST"])
+@flask_login.login_required
+@decorators.admin_required
+def remove_user(user_id):
+    user = models.User.query.filter_by(id=user_id).first()
+
+    if user and user.id != flask_login.current_user.id:
+        db_utils.remove_object_from_db(user)
+
+        flash(SystemMessagesConst.ACCOUNT_REMOVED_SUCCESSFULLY, FlashConsts.FLASH_SUCCESS)
+
+        return redirect(url_for("admin.users_preview", user_id=user.id))
+
+    else:
+        abort(404)

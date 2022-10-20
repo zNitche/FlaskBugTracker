@@ -5,6 +5,7 @@ class SystemMessagesConst:
     PERMISSION_GROUP_DOESNT_EXIST = "Permission Group doesn't exist"
     ACCOUNT_CREATED = "Account {name} has been created"
     ACCOUNT_UPDATED = "Account has been updated successfully"
+    ACCOUNT_REMOVED_SUCCESSFULLY = "Account has been removed successfully"
     ERROR_WHILE_UPDATING_ACCOUNT = "Error while updating account details"
 
 

@@ -11,6 +11,9 @@
                 <span>
                     {{ user.email }}
                 </span>
+                <span>
+                    {{ user.get_permission_group_name() }}
+                </span>
             </div>
         </div>
     </a>

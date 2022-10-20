@@ -4,7 +4,7 @@
 <div class="content-item">
     <div class="item-header">
         <h2>
-            User: {{ user.username }}
+            User: {{ user.username }} {{ " (You)" if current_user.id == user.id else "" }}
         </h2>
     </div>
     <div class="item-content">
@@ -13,10 +13,17 @@
                 {% include "components/form_component.html" %}
             {% endwith %}
 
-            <button type="submit">
+            <button class="form-add-button" type="submit">
                 Update
             </button>
         </form>
+        {% if current_user.id != user.id %}
+            <form class="admin-form" action="{{ url_for('admin.remove_user', user_id=user.id) }}" method="POST">
+                <button class="form-remove-button" type="submit">
+                    Remove
+                </button>
+            </form>
+        {% endif %}
     </div>
 </div>
 

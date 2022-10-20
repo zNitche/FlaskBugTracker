@@ -53,19 +53,6 @@ body {
     box-sizing: border-box;
 }
 
-.login-submit-button {
-    background-color: #5abf73;
-    padding: 10px 0px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    color: #ffffff;
-}
-
-.login-submit-button:hover {
-    background-color: #48995c;
-}
-
 .login-form {
     width: 80%;
 }
@@ -180,11 +167,7 @@ body {
 }
 
 .content-item-unaligned {
-    align-items: normal
-}
-
-.content-item span:last-child {
-    margin-left: auto;
+    align-items: normal;
 }
 
 .content-item-button {
@@ -206,6 +189,23 @@ body {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.form-remove-button {
+    background-color: red;
+}
+
+.form-add-button:hover {
+    background-color: black;
+}
+
+.form-add-button {
+    background-color: #5abf73;
+}
+
+.form-add-button:hover {
+    background-color: #48995c;
 }
 
 .content-item-button .content-item:hover {
@@ -229,7 +229,11 @@ body {
 }
 
 .admin-form {
+    margin-bottom: 20px;
+}
 
+.admin-form:last-child {
+    margin-bottom: 0px;
 }
 
 .admin-form .form-inputs {
@@ -254,17 +258,12 @@ body {
     padding: 5px;
 }
 
-.admin-form button[type="submit"] {
-    background-color: #5abf73;
+button[type="submit"] {
     padding: 10px 0px;
     border: none;
     cursor: pointer;
     width: 100%;
     color: #ffffff;
-}
-
-.login-submit-button:hover {
-    background-color: #48995c;
 }
 
 .flashed-messages-container {
