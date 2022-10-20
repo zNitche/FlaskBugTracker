@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, flash, url_for, abort, redirect
 import flask_login
 from flask_bug_tracker.app_modules import decorators, forms
 from flask_bug_tracker import models
-from flask_bug_tracker.utils import db_utils, account_utils
+from flask_bug_tracker.utils import db_utils, account_utils, table_utils
 from flask_bug_tracker.consts import SystemMessagesConst, FlashConsts
 
 
@@ -60,7 +60,9 @@ def register_account():
 def users_preview():
     users = models.User.query.all()
 
-    return render_template("users.html", users=users)
+    table_struct = table_utils.get_data_table_data_struct_for_users(users)
+
+    return render_template("users.html", users=users, table_struct=table_struct)
 
 
 @admin.route("/users/<user_id>", methods=["GET"])

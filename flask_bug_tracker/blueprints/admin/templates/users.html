@@ -1,35 +1,25 @@
 {% extends "base_templates/page_layout_base.html" %}
 {% block page_content %}
 
-<div class="content-item content-item-unaligned">
-    <div class="item-content item-content-unaligned">
-        <span>
-            Username
-        </span>
-        <span>
-            Email
-        </span>
-        <span>
-            Access Group
-        </span>
-    </div>
+<div class="table-container">
+    <table class="data-table">
+        <tr>
+            {% for header in table_struct['headers'] %}
+                <th>
+                    {{ header }}
+                </th>
+            {% endfor %}
+        </tr>
+        {% for user_id in table_struct['content'] %}
+            <tr onclick="window.location='{{ url_for('admin.preview_user', user_id=user_id) }}';">
+                {% for data in table_struct['content'][user_id] %}
+                    <td>
+                        {{ data }}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
 </div>
-{% for user in users %}
-    <a href="{{ url_for('admin.preview_user', user_id=user.id) }}" class="content-item-button">
-        <div class="content-item content-item-unaligned">
-            <div class="item-content item-content-unaligned">
-                <span>
-                    {{ user.username }}
-                </span>
-                <span>
-                    {{ user.email }}
-                </span>
-                <span>
-                    {{ user.get_permission_group_name() }}
-                </span>
-            </div>
-        </div>
-    </a>
-{% endfor %}
 
 {% endblock %}
