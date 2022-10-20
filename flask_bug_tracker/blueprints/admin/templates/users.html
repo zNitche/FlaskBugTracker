@@ -1,6 +1,19 @@
 {% extends "base_templates/page_layout_base.html" %}
 {% block page_content %}
 
+<div class="content-item content-item-unaligned">
+    <div class="item-content item-content-unaligned">
+        <span>
+            Username
+        </span>
+        <span>
+            Email
+        </span>
+        <span>
+            Access Group
+        </span>
+    </div>
+</div>
 {% for user in users %}
     <a href="{{ url_for('admin.preview_user', user_id=user.id) }}" class="content-item-button">
         <div class="content-item content-item-unaligned">
