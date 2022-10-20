@@ -38,11 +38,13 @@ def register_blueprints(app):
     from flask_bug_tracker.blueprints.main_app.routes import main_app
     from flask_bug_tracker.blueprints.errors.routes import errors
     from flask_bug_tracker.blueprints.admin.routes import admin
+    from flask_bug_tracker.blueprints.issues.routes import issues
 
     app.register_blueprint(main_app)
     app.register_blueprint(auth)
     app.register_blueprint(admin)
     app.register_blueprint(errors)
+    app.register_blueprint(issues)
 
 
 def create_app():

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SelectField
+from wtforms import StringField, PasswordField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, Optional
 from flask_bug_tracker.consts import ValidationConsts, SystemMessagesConst
 from flask_bug_tracker import models
@@ -82,3 +82,21 @@ class UpdateUserForm(FormBase, UserValidationMixin):
 
         if user and (user.id != self.current_user_id):
             raise ValidationError(SystemMessagesConst.EMAIL_TAKEN)
+
+
+class AddIssueForm(FormBase):
+    title = StringField("Title", validators=[DataRequired(),
+                                             Length(min=ValidationConsts.MIN_ISSUE_NAME_LENGTH,
+                                                    max=ValidationConsts.MAX_ISSUE_NAME_LENGTH)])
+
+    content = TextAreaField("Content", validators=[DataRequired(),
+                                                   Length(min=ValidationConsts.MIN_ISSUE_CONTENT_LENGTH,
+                                                          max=ValidationConsts.MAX_ISSUE_CONTENT_LENGTH)])
+
+    assigned_to_user_name = SelectField("Assign To", choices=[])
+
+    def validate_assigned_to_user_name(self, assigned_to_user_name):
+        user = models.User.query.filter_by(username=assigned_to_user_name.data).first()
+
+        if not user:
+            raise ValidationError(SystemMessagesConst.USER_DOESNT_EXIST)

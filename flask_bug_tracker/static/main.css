@@ -69,6 +69,8 @@ body {
 .form-inputs .form-input {
     margin-bottom: 10px;
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .form-errors {

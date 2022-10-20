@@ -1,0 +1,50 @@
+{% extends "base_templates/page_layout_base.html" %}
+{% block page_content %}
+
+<div class="content-item content-item-unaligned">
+    <div class="item-content item-content-unaligned">
+        <span>
+            ID
+        </span>
+        <span>
+            Assigned to
+        </span>
+        <span>
+            Title
+        </span>
+        <span>
+            Date
+        </span>
+    </div>
+</div>
+{% if issues|length > 0 %}
+    {% for issue in issues %}
+        <div class="content-item content-item-unaligned">
+            <div class="item-content item-content-unaligned">
+                <span>
+                    {{ issue.id }}
+                </span>
+                <span>
+                    {{ issue.get_assigned_to_user_name() }}
+                </span>
+                <span>
+                    {{ issue.title }}
+                </span>
+                <span>
+                    {{ issue.date }}
+                </span>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <span>
+        No issues to show
+    </span>
+    <span>
+        <a href="{{ url_for('issues.add_issue') }}">
+            Create one
+        </a>
+    </span>
+{% endif %}
+
+{% endblock %}

@@ -7,6 +7,9 @@ class SystemMessagesConst:
     ACCOUNT_UPDATED = "Account has been updated successfully"
     ACCOUNT_REMOVED_SUCCESSFULLY = "Account has been removed successfully"
     ERROR_WHILE_UPDATING_ACCOUNT = "Error while updating account details"
+    USER_DOESNT_EXIST = "User doesnt exist"
+    ADDED_ISSUE = "Issue has been added successfully"
+    ERROR_WHILE_ADDING_ISSUE = "Error while adding issue"
 
 
 class FlashConsts:
@@ -30,3 +33,8 @@ class ValidationConsts:
     MAX_EMAIL_LENGTH = 50
     MIN_PASSWORD_LENGTH = 8
     MAX_PASSWORD_LENGTH = 20
+
+    MIN_ISSUE_NAME_LENGTH = 2
+    MAX_ISSUE_NAME_LENGTH = 20
+    MIN_ISSUE_CONTENT_LENGTH = 10
+    MAX_ISSUE_CONTENT_LENGTH = 200
