@@ -1,50 +1,40 @@
 {% extends "base_templates/page_layout_base.html" %}
 {% block page_content %}
 
-<div class="content-item content-item-unaligned">
-    <div class="item-content item-content-unaligned">
-        <span>
-            ID
-        </span>
-        <span>
-            Assigned to
-        </span>
-        <span>
-            Title
-        </span>
-        <span>
-            Date
-        </span>
+{% if True %}
+    <div class="table-container">
+        <table class="data-table">
+            <tr>
+                {% for header in table_struct['headers'] %}
+                    <th>
+                        {{ header }}
+                    </th>
+                {% endfor %}
+            </tr>
+            {% for issue_id in table_struct['content'] %}
+                <tr onclick="window.location='#';">
+                    {% for data in table_struct['content'][issue_id] %}
+                        <td>
+                            {{ data }}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
     </div>
-</div>
-{% if issues|length > 0 %}
-    {% for issue in issues %}
-        <div class="content-item content-item-unaligned">
-            <div class="item-content item-content-unaligned">
-                <span>
-                    {{ issue.id }}
-                </span>
-                <span>
-                    {{ issue.get_assigned_to_user_name() }}
-                </span>
-                <span>
-                    {{ issue.title }}
-                </span>
-                <span>
-                    {{ issue.date }}
-                </span>
-            </div>
-        </div>
-    {% endfor %}
 {% else %}
-    <span>
-        No issues to show
-    </span>
-    <span>
-        <a href="{{ url_for('issues.add_issue') }}">
-            Create one
-        </a>
-    </span>
+    <div class="content-item">
+        <div class="item-content">
+            <span>
+                No issues to show
+            </span>
+            <span>
+                <a href="{{ url_for('issues.add_issue') }}">
+                    Create one
+                </a>
+            </span>
+        </div>
+    </div>
 {% endif %}
 
 {% endblock %}

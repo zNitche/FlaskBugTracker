@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, flash, redirect, url_for, request
 import flask_login
 from flask_bug_tracker import models
 from flask_bug_tracker.app_modules import forms
-from flask_bug_tracker.utils import db_utils
+from flask_bug_tracker.utils import db_utils, table_utils
 from flask_bug_tracker.consts import SystemMessagesConst, FlashConsts
 
 
@@ -14,7 +14,9 @@ issues = Blueprint("issues", __name__, template_folder="templates", static_folde
 def preview_issues():
     issues = models.Issue.query.all()
 
-    return render_template("issues.html", issues=issues)
+    table_struct = table_utils.get_data_table_data_struct_for_issues(issues)
+
+    return render_template("issues.html", table_struct=table_struct)
 
 
 @issues.route("/add", methods=["GET", "POST"])

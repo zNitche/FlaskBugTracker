@@ -16,3 +16,25 @@ def get_data_table_data_struct_for_users(users):
         }
 
     return struct
+
+
+def get_data_table_data_struct_for_issues(issues):
+    headers = ["ID", "Title", "Date", "Owner", "Assigned to"]
+    issues_struct = {}
+
+    for issue in issues:
+        issues_struct[issue.id] = [
+            issue.id,
+            issue.title,
+            issue.date,
+            issue.get_owner_name(),
+            issue.get_assigned_to_user_name()
+        ]
+
+    struct = {
+            "headers": headers,
+            "content": issues_struct
+        }
+
+    return struct
+
