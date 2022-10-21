@@ -67,4 +67,5 @@ class PaginationConsts:
 
 
 class UserActionsLogsConsts:
-    ISSUE_ASSIGNED_TO_USER = "Issue {issue_id} has been assigned to {assignee_name} by {reporter_name}"
+    ISSUE_ASSIGNED_TO_USER = "Issue #{issue_id} has been assigned to {assignee_name} by {reporter_name}"
+    ISSUE_STATUS_CHANGED = "Issue #{issue_id} status changed to {issue_state} by {username}"

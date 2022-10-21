@@ -4,8 +4,7 @@ from datetime import datetime
 from flask_bug_tracker import models
 from flask_bug_tracker.app_modules import forms, decorators
 from flask_bug_tracker.utils import db_utils, table_utils, issues_utils, logs_utils
-from flask_bug_tracker.consts import SystemMessagesConst, FlashConsts, PaginationConsts, UserActionsLogsConsts,\
-    IssuesConsts
+from flask_bug_tracker.consts import SystemMessagesConst, FlashConsts, PaginationConsts, IssuesConsts
 
 
 issues = Blueprint("issues", __name__, template_folder="templates", static_folder="static", url_prefix="/issues")
@@ -113,17 +112,16 @@ def update_issue(issue_id):
             issue.title = issue_form.title.data
             issue.content = issue_form.content.data
             issue.last_updated = datetime.utcnow()
-            issue.status = issue_form.status.data
 
             assigned_user_id = models.User.query.filter_by(username=issue_form.assigned_to_user_name.data).first().id
 
             if not issue.assigned_to_user_id == assigned_user_id:
-                logs_utils.log_user_action(current_user.id, UserActionsLogsConsts.ISSUE_ASSIGNED_TO_USER.format(
-                    issue_id=f"#{issue.id}",
-                    assignee_name=issue_form.assigned_to_user_name.data,
-                    reporter_name=current_user.username
-                ), issue.assigned_to_user_id)
+                logs_utils.log_issue_assignment_change(current_user, issue, issue_form.assigned_to_user_name.data)
 
+            if not issue.status == issue_form.status.data:
+                logs_utils.log_issue_status_change(current_user, issue, issue_form.status.data)
+
+            issue.status = issue_form.status.data
             issue.assigned_to_user_id = assigned_user_id
 
             db_utils.commit_session()
@@ -175,11 +173,7 @@ def add_issue():
 
         db_utils.add_object_to_db(issue)
 
-        logs_utils.log_user_action(user.id, UserActionsLogsConsts.ISSUE_ASSIGNED_TO_USER.format(
-            issue_id=f"#{issue.id}",
-            assignee_name=assigned_to_user_name,
-            reporter_name=user.username
-        ), assigned_to_user_id)
+        logs_utils.log_issue_assignment_change(user, issue, assigned_to_user_name)
 
         flash(SystemMessagesConst.ADDED_ISSUE, FlashConsts.FLASH_SUCCESS)
 
