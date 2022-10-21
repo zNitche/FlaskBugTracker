@@ -4,7 +4,8 @@ from datetime import datetime
 from flask_bug_tracker import models
 from flask_bug_tracker.app_modules import forms, decorators
 from flask_bug_tracker.utils import db_utils, table_utils, issues_utils, logs_utils
-from flask_bug_tracker.consts import SystemMessagesConst, FlashConsts, PaginationConsts, UserActionsLogsConsts
+from flask_bug_tracker.consts import SystemMessagesConst, FlashConsts, PaginationConsts, UserActionsLogsConsts,\
+    IssuesConsts
 
 
 issues = Blueprint("issues", __name__, template_folder="templates", static_folder="static", url_prefix="/issues")
@@ -33,33 +34,45 @@ def home():
     return render_template("navigation_page.html", page_options=page_options)
 
 
-@issues.route("/all", defaults={"page_id": 1})
-@issues.route("/all/<int:page_id>")
+@issues.route("/all", defaults={"page_id": 1}, methods=["GET", "POST"])
+@issues.route("/all/<int:page_id>", methods=["GET", "POST"])
 @flask_login.login_required
 @decorators.admin_required
 def preview_all_issues(page_id):
+    search_issue_form = forms.SearchIssueForm()
+
     issues = models.Issue.query.order_by(models.Issue.last_updated.desc())
+
+    if search_issue_form.validate_on_submit() and search_issue_form.status.data != IssuesConsts.ALL_ISSUES:
+        issues = issues.order_by(models.Issue.last_updated.desc()).filter_by(status=search_issue_form.status.data)
+
     issues = issues.paginate(page=page_id, per_page=PaginationConsts.ISSUES_PER_PAGE)
 
     table_struct = table_utils.get_data_table_data_struct_for_issues(issues.items)
 
-    return render_template("preview_issues.html", issues=issues, table_struct=table_struct)
+    return render_template("preview_issues.html", issues=issues, table_struct=table_struct,
+                           search_issue_form=search_issue_form)
 
 
-@issues.route("/my", defaults={"page_id": 1})
-@issues.route("/my/<int:page_id>")
+@issues.route("/my", defaults={"page_id": 1}, methods=["GET", "POST"])
+@issues.route("/my/<int:page_id>", methods=["GET", "POST"])
 @flask_login.login_required
 def preview_my_issues(page_id):
     current_user_id = flask_login.current_user.id
+    search_issue_form = forms.SearchIssueForm()
 
     issues = models.Issue.query.order_by(models.Issue.last_updated.desc()).filter(
         (models.Issue.owner_id == current_user_id) | (models.Issue.assigned_to_user_id == current_user_id))
 
+    if search_issue_form.validate_on_submit() and search_issue_form.status.data != IssuesConsts.ALL_ISSUES:
+        issues = issues.order_by(models.Issue.last_updated.desc()).filter_by(status=search_issue_form.status.data)
+
     issues = issues.paginate(page=page_id, per_page=PaginationConsts.ISSUES_PER_PAGE)
 
     table_struct = table_utils.get_data_table_data_struct_for_issues(issues.items)
 
-    return render_template("preview_issues.html", issues=issues, table_struct=table_struct)
+    return render_template("preview_issues.html", issues=issues, table_struct=table_struct,
+                           search_issue_form=search_issue_form)
 
 
 @issues.route("/issue/<issue_id>", methods=["GET"])

@@ -116,3 +116,7 @@ class UpdateIssueForm(FormBase, IssuesValidationMixin):
     status = SelectField("Status", choices=IssuesConsts.ISSUES_STATUS_TYPES)
 
     assigned_to_user_name = SelectField("Assign To", choices=[])
+
+
+class SearchIssueForm(FormBase):
+    status = SelectField("Status", choices=IssuesConsts.ISSUES_STATUS_TYPES_FOR_FILTER)

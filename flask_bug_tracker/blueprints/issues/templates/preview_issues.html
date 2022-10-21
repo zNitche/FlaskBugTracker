@@ -1,7 +1,21 @@
 {% extends "base_templates/page_layout_base.html" %}
 {% block page_content %}
 
+{% if search_issue_form is defined %}
+    <div class="content-item">
+        <div class="item-content">
+            <form class="default-form" action="" method="POST">
+                {% with form=search_issue_form %}
+                    {% include "components/form_component.html" %}
+                {% endwith %}
 
+                <button class="form-add-button" type="submit">
+                    Filter
+                </button>
+            </form>
+        </div>
+    </div>
+{% endif %}
 {% if table_struct['content']|length > 0 %}
     <div class="table-container">
         <table class="data-table">
