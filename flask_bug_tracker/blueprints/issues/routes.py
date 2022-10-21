@@ -46,17 +46,20 @@ def preview_all_issues(page_id):
     return render_template("preview_issues.html", issues=issues, table_struct=table_struct)
 
 
-@issues.route("/my")
+@issues.route("/my", defaults={"page_id": 1})
+@issues.route("/my/<int:page_id>")
 @flask_login.login_required
-def preview_my_issues():
+def preview_my_issues(page_id):
     current_user_id = flask_login.current_user.id
 
-    issues = models.Issue.quer.order_by(models.Issue.last_updated.desc()).filter(
-        (models.Issue.owner_id == current_user_id) | (models.Issue.assigned_to_user_id == current_user_id)).all()
+    issues = models.Issue.query.order_by(models.Issue.last_updated.desc()).filter(
+        (models.Issue.owner_id == current_user_id) | (models.Issue.assigned_to_user_id == current_user_id))
 
-    table_struct = table_utils.get_data_table_data_struct_for_issues(issues)
+    issues = issues.paginate(page=page_id, per_page=PaginationConsts.ISSUES_PER_PAGE)
 
-    return render_template("preview_issues.html", table_struct=table_struct)
+    table_struct = table_utils.get_data_table_data_struct_for_issues(issues.items)
+
+    return render_template("preview_issues.html", issues=issues, table_struct=table_struct)
 
 
 @issues.route("/issue/<issue_id>", methods=["GET"])
@@ -122,7 +125,7 @@ def remove_issue(issue_id):
 
         flash(SystemMessagesConst.ISSUE_REMOVED, FlashConsts.FLASH_SUCCESS)
 
-        return redirect(url_for("issues.preview_issues"))
+        return redirect(url_for("issues.preview_my_issues"))
 
     else:
         abort(404)
@@ -152,6 +155,6 @@ def add_issue():
         flash(SystemMessagesConst.ERROR_WHILE_ADDING_ISSUE, FlashConsts.FLASH_DANGER)
 
     if request.method == "POST":
-        return redirect(url_for("issues.preview_issues"))
+        return redirect(url_for("issues.preview_my_issues"))
 
     return render_template("add_issue.html", add_issue_form=add_issue_form)
