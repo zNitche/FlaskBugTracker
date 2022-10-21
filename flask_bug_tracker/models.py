@@ -80,3 +80,23 @@ class Issue(db.Model):
         user = User.query.filter_by(id=self.assigned_to_user_id).first()
 
         return user.username if user else ""
+
+
+class UserActionLog(db.Model):
+    __tablename__ = "user_action_logs"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, unique=False, nullable=False)
+    another_user_id = db.Column(db.Integer, unique=False, nullable=True)
+    content = db.Column(db.String(ValidationConsts.MAX_USER_ACTION_LOG_LENGTH), unique=False, nullable=True)
+
+    date = db.Column(db.DateTime, unique=False, nullable=False, default=datetime.utcnow)
+
+    @staticmethod
+    def get_actions_for_user_id(user_id):
+        logs = UserActionLog.query.filter(
+            (UserActionLog.user_id == user_id) | (UserActionLog.another_user_id == user_id)
+        ).order_by(UserActionLog.date.desc()).all()
+
+        return logs
+

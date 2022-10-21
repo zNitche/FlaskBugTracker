@@ -54,7 +54,13 @@ class ValidationConsts:
     MIN_ISSUE_CONTENT_LENGTH = 10
     MAX_ISSUE_CONTENT_LENGTH = 400
 
+    MAX_USER_ACTION_LOG_LENGTH = 250
+
 
 class PaginationConsts:
     USERS_PER_PAGE = 15
     ISSUES_PER_PAGE = 15
+
+
+class UserActionsLogsConsts:
+    ISSUE_ASSIGNED_TO_USER = "Issue {issue_id} has been assigned to {assignee_name} by {reporter_name}"

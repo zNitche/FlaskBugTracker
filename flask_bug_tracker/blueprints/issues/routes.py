@@ -3,8 +3,8 @@ import flask_login
 from datetime import datetime
 from flask_bug_tracker import models
 from flask_bug_tracker.app_modules import forms, decorators
-from flask_bug_tracker.utils import db_utils, table_utils, issues_utils
-from flask_bug_tracker.consts import SystemMessagesConst, FlashConsts, PaginationConsts
+from flask_bug_tracker.utils import db_utils, table_utils, issues_utils, logs_utils
+from flask_bug_tracker.consts import SystemMessagesConst, FlashConsts, PaginationConsts, UserActionsLogsConsts
 
 
 issues = Blueprint("issues", __name__, template_folder="templates", static_folder="static", url_prefix="/issues")
@@ -139,6 +139,8 @@ def add_issue():
     add_issue_form = forms.AddIssueForm()
     add_issue_form.assigned_to_user_name.choices = [user.username for user in models.User.query.all()]
 
+    user = flask_login.current_user
+
     if add_issue_form.validate_on_submit():
         title = add_issue_form.title.data
         content = add_issue_form.content.data
@@ -147,9 +149,16 @@ def add_issue():
         assigned_to_user_id = models.User.query.filter_by(username=assigned_to_user_name).first().id
 
         issue = models.Issue(title=title, content=content, assigned_to_user_id=assigned_to_user_id,
-                             owner_id=flask_login.current_user.id)
+                             owner_id=user.id)
 
         db_utils.add_object_to_db(issue)
+
+        logs_utils.log_user_action(user.id, UserActionsLogsConsts.ISSUE_ASSIGNED_TO_USER.format(
+            issue_id=f"#{issue.id}",
+            assignee_name=assigned_to_user_name,
+            reporter_name=user.username
+        ),
+         assigned_to_user_id)
 
         flash(SystemMessagesConst.ADDED_ISSUE, FlashConsts.FLASH_SUCCESS)
 

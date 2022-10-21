@@ -11,7 +11,6 @@ main_app = Blueprint("main_app", __name__, template_folder="templates", static_f
 def home():
     current_user_id = flask_login.current_user.id
 
-    my_issues = models.Issue.query.order_by(models.Issue.last_updated.desc()).filter(
-        (models.Issue.owner_id == current_user_id) | (models.Issue.assigned_to_user_id == current_user_id)).all()
+    user_actions_logs = models.UserActionLog.get_actions_for_user_id(current_user_id)
 
-    return render_template("index.html", my_issues=my_issues)
+    return render_template("index.html", user_actions_logs=user_actions_logs)

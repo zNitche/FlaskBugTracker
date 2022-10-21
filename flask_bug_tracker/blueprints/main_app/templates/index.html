@@ -1,32 +1,21 @@
 {% extends "base_templates/page_layout_base.html" %}
 {% block page_content %}
 
-{% if my_issues|length > 0 %}
-    {% for issue in my_issues %}
+{% if user_actions_logs|length > 0 %}
+    {% for log in user_actions_logs %}
         <div class="content-item">
             <div class="item-header">
                 <h2>
-                    <a href="{{ url_for('issues.preview_issue', issue_id=issue.id) }}">
-                        #{{ issue.id }} {{ issue.title }}
-                    </a>
+                    {{ log.date }}
                 </h2>
             </div>
             <div class="item-content">
-                <b>By: {{ issue.get_owner_name() }}</b>
-            </div>
-            <div class="item-content">
-                <b>Assigned to: {{ issue.get_assigned_to_user_name() }}</b>
-            </div>
-            <div class="item-content">
-                <b>Status: {{ issue.status }}</b>
-            </div>
-            <div class="item-content">
-                {{ issue.content }}
+                {{ log.content }}
             </div>
         </div>
     {% endfor %}
 {% else %}
-    No Issues updates...
+    No updates...
 {% endif %}
 
 {% endblock %}
