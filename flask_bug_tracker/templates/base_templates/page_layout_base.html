@@ -23,7 +23,9 @@
             </div>
             <div class="nav-dropdown" id="nav-dropdown">
                 <div class="nav-dropdown-item">
-                    <a href="#">Projects</a>
+                    <a href="{{ url_for('projects.home') }}">
+                        Projects
+                    </a>
                 </div>
                 <div class="nav-dropdown-item">
                     <a href="{{ url_for('issues.home') }}">
