@@ -115,14 +115,16 @@ def update_issue(issue_id):
             issue.last_updated = datetime.utcnow()
             issue.status = issue_form.status.data
 
-            issue.assigned_to_user_id = \
-                models.User.query.filter_by(username=issue_form.assigned_to_user_name.data).first().id
+            assigned_user_id = models.User.query.filter_by(username=issue_form.assigned_to_user_name.data).first().id
 
-            logs_utils.log_user_action(current_user.id, UserActionsLogsConsts.ISSUE_ASSIGNED_TO_USER.format(
-                issue_id=f"#{issue.id}",
-                assignee_name=issue_form.assigned_to_user_name.data,
-                reporter_name=current_user.username
-            ), issue.assigned_to_user_id)
+            if not issue.assigned_to_user_id == assigned_user_id:
+                logs_utils.log_user_action(current_user.id, UserActionsLogsConsts.ISSUE_ASSIGNED_TO_USER.format(
+                    issue_id=f"#{issue.id}",
+                    assignee_name=issue_form.assigned_to_user_name.data,
+                    reporter_name=current_user.username
+                ), issue.assigned_to_user_id)
+
+            issue.assigned_to_user_id = assigned_user_id
 
             db_utils.commit_session()
 
