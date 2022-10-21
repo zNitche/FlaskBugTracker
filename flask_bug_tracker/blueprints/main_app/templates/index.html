@@ -18,6 +18,9 @@
                 <b>Assigned to: {{ issue.get_assigned_to_user_name() }}</b>
             </div>
             <div class="item-content">
+                <b>Status: {{ issue.status }}</b>
+            </div>
+            <div class="item-content">
                 {{ issue.content }}
             </div>
         </div>

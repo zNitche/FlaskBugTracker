@@ -52,7 +52,7 @@ class ValidationConsts:
     MIN_ISSUE_NAME_LENGTH = 2
     MAX_ISSUE_NAME_LENGTH = 20
     MIN_ISSUE_CONTENT_LENGTH = 10
-    MAX_ISSUE_CONTENT_LENGTH = 200
+    MAX_ISSUE_CONTENT_LENGTH = 400
 
 
 class PaginationConsts:
