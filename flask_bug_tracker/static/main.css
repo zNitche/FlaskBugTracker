@@ -323,6 +323,21 @@ button[type="submit"] {
    margin-left: 10px;
 }
 
+.item-header {
+   width: 100%;
+   text-align: center;
+}
+
+.item-header a {
+    color: #000000;
+}
+
+.item-content {
+   width: 80%;
+   margin-top: 5px;
+   margin-bottom: 5px;
+}
+
 .flashed-messages-container {
     display: flex;
     flex-direction: column;
@@ -365,4 +380,8 @@ button[type="submit"] {
   .content-container, .navbar-container {
     width: 90%;
   }
+
+  .item-content {
+   width: 90%;
+}
 }

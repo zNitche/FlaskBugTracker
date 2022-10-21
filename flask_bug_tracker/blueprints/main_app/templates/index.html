@@ -1,17 +1,29 @@
 {% extends "base_templates/page_layout_base.html" %}
 {% block page_content %}
 
-{% for _ in range(5) %}
-    <div class="content-item">
-        <div class="item-header">
-            <h2>
-                Test Content Item
-            </h2>
+{% if my_issues|length > 0 %}
+    {% for issue in my_issues %}
+        <div class="content-item">
+            <div class="item-header">
+                <h2>
+                    <a href="{{ url_for('issues.preview_issue', issue_id=issue.id) }}">
+                        #{{ issue.id }} {{ issue.title }}
+                    </a>
+                </h2>
+            </div>
+            <div class="item-content">
+                <b>By: {{ issue.get_owner_name() }}</b>
+            </div>
+            <div class="item-content">
+                <b>Assigned to: {{ issue.get_assigned_to_user_name() }}</b>
+            </div>
+            <div class="item-content">
+                {{ issue.content }}
+            </div>
         </div>
-        <div class="item-content">
-            Content Item
-        </div>
-    </div>
-{% endfor %}
+    {% endfor %}
+{% else %}
+    No Issues updates...
+{% endif %}
 
 {% endblock %}

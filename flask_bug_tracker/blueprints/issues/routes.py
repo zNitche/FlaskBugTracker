@@ -3,7 +3,7 @@ import flask_login
 from datetime import datetime
 from flask_bug_tracker import models
 from flask_bug_tracker.app_modules import forms, decorators
-from flask_bug_tracker.utils import db_utils, table_utils
+from flask_bug_tracker.utils import db_utils, table_utils, issues_utils
 from flask_bug_tracker.consts import SystemMessagesConst, FlashConsts, PaginationConsts
 
 
@@ -67,7 +67,9 @@ def preview_my_issues(page_id):
 def preview_issue(issue_id):
     issue = models.Issue.query.filter_by(id=issue_id).first()
 
-    if issue:
+    if issue and (issues_utils.check_issue_access(issue, flask_login.current_user) or
+                  flask_login.current_user.id == issue.assigned_to_user_id):
+
         issue_form = forms.UpdateIssueForm()
 
         issue_form.title.data = issue.title
@@ -88,7 +90,7 @@ def preview_issue(issue_id):
 def update_issue(issue_id):
     issue = models.Issue.query.filter_by(id=issue_id).first()
 
-    if issue and issue.owner_id == flask_login.current_user.id:
+    if issue and issues_utils.check_issue_access(issue, flask_login.current_user):
         issue_form = forms.UpdateIssueForm()
 
         issue_form.assigned_to_user_name.choices = [user.username for user in models.User.query.all()]
@@ -120,7 +122,7 @@ def update_issue(issue_id):
 def remove_issue(issue_id):
     issue = models.Issue.query.filter_by(id=issue_id).first()
 
-    if issue and issue.owner_id == flask_login.current_user.id:
+    if issue and issues_utils.check_issue_access(issue, flask_login.current_user):
         db_utils.remove_object_from_db(issue)
 
         flash(SystemMessagesConst.ISSUE_REMOVED, FlashConsts.FLASH_SUCCESS)

@@ -60,8 +60,8 @@ class Issue(db.Model):
     __tablename__ = "issues"
 
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(ValidationConsts.MAX_USERNAME_LENGTH), unique=True, nullable=False)
-    content = db.Column(db.String(ValidationConsts.MAX_EMAIL_LENGTH), unique=True, nullable=True)
+    title = db.Column(db.String(ValidationConsts.MAX_ISSUE_NAME_LENGTH), unique=True, nullable=False)
+    content = db.Column(db.String(ValidationConsts.MAX_ISSUE_CONTENT_LENGTH), unique=False, nullable=True)
 
     status = db.Column(db.String(30), unique=False, nullable=False, default=IssuesConsts.ISSUE_TODO)
 
