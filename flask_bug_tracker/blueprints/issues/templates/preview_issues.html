@@ -22,6 +22,20 @@
                 </tr>
             {% endfor %}
         </table>
+        {% if issues.has_next or issues.has_prev %}
+            <div class="pagination-controls">
+                {% if issues.has_prev %}
+                    <a class="pagination-controls-item" href="{{ url_for('issues.preview_all_issues', page_id=issues.prev_num) }}">
+                        Prev
+                    </a>
+                {% endif %}
+                {% if issues.has_next %}
+                    <a class="pagination-controls-item" href="{{ url_for('issues.preview_all_issues', page_id=issues.next_num) }}">
+                        Next
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
     </div>
 {% else %}
     <div class="content-item">

@@ -57,3 +57,4 @@ class ValidationConsts:
 
 class PaginationConsts:
     USERS_PER_PAGE = 15
+    ISSUES_PER_PAGE = 15
