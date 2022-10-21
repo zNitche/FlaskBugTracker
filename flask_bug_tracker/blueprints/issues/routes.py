@@ -37,7 +37,7 @@ def home():
 @flask_login.login_required
 @decorators.admin_required
 def preview_all_issues():
-    issues = models.Issue.query.all()
+    issues = models.Issue.query.order_by(models.Issue.last_updated.desc()).all()
 
     table_struct = table_utils.get_data_table_data_struct_for_issues(issues)
 
@@ -49,8 +49,8 @@ def preview_all_issues():
 def preview_my_issues():
     current_user_id = flask_login.current_user.id
 
-    issues = models.Issue.query.filter((models.Issue.owner_id == current_user_id) |
-                                       (models.Issue.assigned_to_user_id == current_user_id)).all()
+    issues = models.Issue.quer.order_by(models.Issue.last_updated.desc()).filter(
+        (models.Issue.owner_id == current_user_id) | (models.Issue.assigned_to_user_id == current_user_id)).all()
 
     table_struct = table_utils.get_data_table_data_struct_for_issues(issues)
 

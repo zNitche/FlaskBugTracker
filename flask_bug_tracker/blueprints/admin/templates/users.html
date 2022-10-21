@@ -20,6 +20,20 @@
             </tr>
         {% endfor %}
     </table>
+    {% if users.has_next or users.has_prev %}
+        <div class="pagination-controls">
+            {% if users.has_prev %}
+                <a class="pagination-controls-item" href="{{ url_for('admin.users_preview', page_id=users.prev_num) }}">
+                    Prev
+                </a>
+            {% endif %}
+            {% if users.has_next %}
+                <a class="pagination-controls-item" href="{{ url_for('admin.users_preview', page_id=users.next_num) }}">
+                    Next
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}

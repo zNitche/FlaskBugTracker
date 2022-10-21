@@ -308,6 +308,21 @@ button[type="submit"] {
   color: white;
 }
 
+.pagination-controls {
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.pagination-controls-item {
+
+}
+
+.pagination-controls-item:last-child {
+   margin-left: 10px;
+}
+
 .flashed-messages-container {
     display: flex;
     flex-direction: column;

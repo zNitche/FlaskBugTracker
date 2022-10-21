@@ -3,7 +3,7 @@ import flask_login
 from flask_bug_tracker.app_modules import decorators, forms
 from flask_bug_tracker import models
 from flask_bug_tracker.utils import db_utils, account_utils, table_utils
-from flask_bug_tracker.consts import SystemMessagesConst, FlashConsts
+from flask_bug_tracker.consts import SystemMessagesConst, FlashConsts, PaginationConsts
 
 
 admin = Blueprint("admin", __name__, template_folder="templates", static_folder="static", url_prefix="/admin")
@@ -54,18 +54,20 @@ def register_account():
     return render_template("register_account.html", registration_form=registration_form)
 
 
-@admin.route("/users", methods=["GET"])
+@admin.route("/users", methods=["GET"], defaults={"page_id": 1})
+@admin.route("/users/<int:page_id>", methods=["GET"])
 @flask_login.login_required
 @decorators.admin_required
-def users_preview():
-    users = models.User.query.all()
+def users_preview(page_id):
+    users = models.User.query
+    users = users.paginate(page=page_id, per_page=PaginationConsts.USERS_PER_PAGE)
 
-    table_struct = table_utils.get_data_table_data_struct_for_users(users)
+    table_struct = table_utils.get_data_table_data_struct_for_users(users.items)
 
     return render_template("users.html", users=users, table_struct=table_struct)
 
 
-@admin.route("/users/<user_id>", methods=["GET"])
+@admin.route("/user/<user_id>", methods=["GET"])
 @flask_login.login_required
 @decorators.admin_required
 def preview_user(user_id):
