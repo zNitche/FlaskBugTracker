@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, flash, redirect, url_for, request,
 import flask_login
 from datetime import datetime
 from flask_bug_tracker import models
-from flask_bug_tracker.app_modules import forms
+from flask_bug_tracker.app_modules import forms, decorators
 from flask_bug_tracker.utils import db_utils, table_utils
 from flask_bug_tracker.consts import SystemMessagesConst, FlashConsts
 
@@ -12,12 +12,49 @@ issues = Blueprint("issues", __name__, template_folder="templates", static_folde
 
 @issues.route("/")
 @flask_login.login_required
-def preview_issues():
+def home():
+    page_options = [
+        {
+            "content": "Add Issue",
+            "url": url_for('issues.add_issue')
+        },
+        {
+            "content": "My Issues",
+            "url": url_for('issues.preview_my_issues')
+        },
+    ]
+
+    if flask_login.current_user.is_admin():
+        page_options.append({
+            "content": "All Issues",
+            "url": url_for('issues.preview_all_issues')
+        })
+
+    return render_template("navigation_page.html", page_options=page_options)
+
+
+@issues.route("/all")
+@flask_login.login_required
+@decorators.admin_required
+def preview_all_issues():
     issues = models.Issue.query.all()
 
     table_struct = table_utils.get_data_table_data_struct_for_issues(issues)
 
-    return render_template("issues.html", table_struct=table_struct)
+    return render_template("preview_issues.html", table_struct=table_struct)
+
+
+@issues.route("/my")
+@flask_login.login_required
+def preview_my_issues():
+    current_user_id = flask_login.current_user.id
+
+    issues = models.Issue.query.filter((models.Issue.owner_id == current_user_id) |
+                                       (models.Issue.assigned_to_user_id == current_user_id)).all()
+
+    table_struct = table_utils.get_data_table_data_struct_for_issues(issues)
+
+    return render_template("preview_issues.html", table_struct=table_struct)
 
 
 @issues.route("/issue/<issue_id>", methods=["GET"])

@@ -24,7 +24,7 @@ def home():
         }
     ]
 
-    return render_template("admin.html", admin_options=admin_options)
+    return render_template("navigation_page.html", page_options=admin_options)
 
 
 @admin.route("/register_account", methods=["GET", "POST"])

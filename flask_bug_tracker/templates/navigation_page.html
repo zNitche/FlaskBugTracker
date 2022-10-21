@@ -1,0 +1,12 @@
+{% extends "base_templates/page_layout_base.html" %}
+{% block page_content %}
+
+{% for option in page_options %}
+    <a class="content-item-button" href="{{ option['url'] }}">
+        <div class="content-item">
+            {{ option["content"] }}
+        </div>
+    </a>
+{% endfor %}
+
+{% endblock %}

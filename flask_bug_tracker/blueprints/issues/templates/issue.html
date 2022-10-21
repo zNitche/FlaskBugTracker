@@ -17,7 +17,7 @@
                 Update
             </button>
         </form>
-        {% if current_user.id != issue.owner %}
+        {% if current_user.id == issue.owner or current_user.is_admin() %}
             <form class="default-form" action="{{ url_for('issues.remove_issue', issue_id=issue.id) }}" method="POST">
                 <button class="form-remove-button" type="submit">
                     Remove
