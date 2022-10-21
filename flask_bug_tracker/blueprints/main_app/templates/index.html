@@ -14,6 +14,20 @@
             </div>
         </div>
     {% endfor %}
+    {% if user_actions_logs_pagination.has_next or user_actions_logs_pagination.has_prev %}
+        <div class="pagination-controls">
+            {% if user_actions_logs_pagination.has_prev %}
+                <a class="pagination-controls-item" href="{{ url_for('main_app.home', page_id=user_actions_logs_pagination.prev_num) }}">
+                    Prev
+                </a>
+            {% endif %}
+            {% if user_actions_logs_pagination.has_next %}
+                <a class="pagination-controls-item" href="{{ url_for('main_app.home', page_id=user_actions_logs_pagination.next_num) }}">
+                    Next
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
 {% else %}
     No updates...
 {% endif %}

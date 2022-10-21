@@ -96,7 +96,7 @@ class UserActionLog(db.Model):
     def get_actions_for_user_id(user_id):
         logs = UserActionLog.query.filter(
             (UserActionLog.user_id == user_id) | (UserActionLog.another_user_id == user_id)
-        ).order_by(UserActionLog.date.desc()).all()
+        ).order_by(UserActionLog.date.desc())
 
         return logs
 

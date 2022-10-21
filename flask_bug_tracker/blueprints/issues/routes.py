@@ -89,6 +89,7 @@ def preview_issue(issue_id):
 @flask_login.login_required
 def update_issue(issue_id):
     issue = models.Issue.query.filter_by(id=issue_id).first()
+    current_user = flask_login.current_user
 
     if issue and issues_utils.check_issue_access(issue, flask_login.current_user):
         issue_form = forms.UpdateIssueForm()
@@ -103,6 +104,12 @@ def update_issue(issue_id):
 
             issue.assigned_to_user_id = \
                 models.User.query.filter_by(username=issue_form.assigned_to_user_name.data).first().id
+
+            logs_utils.log_user_action(current_user.id, UserActionsLogsConsts.ISSUE_ASSIGNED_TO_USER.format(
+                issue_id=f"#{issue.id}",
+                assignee_name=issue_form.assigned_to_user_name.data,
+                reporter_name=current_user.username
+            ), issue.assigned_to_user_id)
 
             db_utils.commit_session()
 
@@ -157,8 +164,7 @@ def add_issue():
             issue_id=f"#{issue.id}",
             assignee_name=assigned_to_user_name,
             reporter_name=user.username
-        ),
-         assigned_to_user_id)
+        ), assigned_to_user_id)
 
         flash(SystemMessagesConst.ADDED_ISSUE, FlashConsts.FLASH_SUCCESS)
 
