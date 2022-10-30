@@ -6,7 +6,7 @@ def get_data_table_data_struct_for_users(users):
         users_struct[user.id] = [
             user.username,
             user.email,
-            user.get_permission_group_name(),
+            user.permission_group.name,
             len(user.issues)
         ]
 
@@ -26,7 +26,7 @@ def get_data_table_data_struct_for_issues(issues):
         issues_struct[issue.id] = [
             issue.id,
             issue.title,
-            issue.get_owner_name(),
+            issue.owner.username,
             issue.get_assigned_to_user_name(),
             issue.date,
             issue.last_updated,

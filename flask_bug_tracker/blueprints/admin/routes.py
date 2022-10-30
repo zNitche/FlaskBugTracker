@@ -39,7 +39,7 @@ def register_account():
         password = registration_form.password.data
         permission_group = registration_form.permission_group.data
 
-        password = password if password is not "" else account_utils.generate_random_password()
+        password = password if password != "" else account_utils.generate_random_password()
 
         password_hash = account_utils.hash_password(password)
         permission_group_id = models.PermissionGroup.get_group_by_name(permission_group).id
@@ -78,7 +78,7 @@ def preview_user(user_id):
 
         update_user_form.username.data = user.username
         update_user_form.email.data = user.email
-        update_user_form.permission_group.data = user.get_permission_group_name()
+        update_user_form.permission_group.data = user.permission_group.name
 
         return render_template("user.html", user=user, update_user_form=update_user_form)
 
@@ -110,6 +110,8 @@ def update_user(user_id):
 
         else:
             flash(SystemMessagesConst.ERROR_WHILE_UPDATING_ACCOUNT, FlashConsts.FLASH_DANGER)
+
+            return render_template("user.html", user=user, update_user_form=update_user_form)
 
         return redirect(url_for("admin.preview_user", user_id=user.id))
 

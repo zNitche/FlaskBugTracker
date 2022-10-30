@@ -20,15 +20,10 @@ class User(db.Model, UserMixin):
 
     permission_group_id = db.Column(db.Integer, db.ForeignKey("permission_groups.id"), nullable=False)
 
-    issues = db.relationship("Issue", backref="user", lazy=True)
-
-    def get_permission_group_name(self):
-        group = PermissionGroup.query.filter_by(id=self.permission_group_id).first()
-
-        return group.name
+    issues = db.relationship("Issue", backref="owner", lazy=True)
 
     def is_admin(self):
-        status = True if self.get_permission_group_name() == PermissionGroupsConsts.ADMIN_GROUP else False
+        status = True if self.permission_group.name == PermissionGroupsConsts.ADMIN_GROUP else False
 
         return status
 
@@ -76,11 +71,6 @@ class Issue(db.Model):
 
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     assigned_to_user_id = db.Column(db.Integer, unique=False, nullable=True, default=None)
-
-    def get_owner_name(self):
-        user = User.query.filter_by(id=self.owner_id).first()
-
-        return user.username
 
     def get_assigned_to_user_name(self):
         user = User.query.filter_by(id=self.assigned_to_user_id).first()

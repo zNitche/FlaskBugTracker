@@ -131,6 +131,8 @@ def update_issue(issue_id):
         else:
             flash(SystemMessagesConst.ERROR_WHILE_UPDATING_ISSUE, FlashConsts.FLASH_DANGER)
 
+            return render_template("issue.html", issue=issue, issue_form=issue_form)
+
         return redirect(url_for("issues.preview_issue", issue_id=issue_id))
 
     else:
