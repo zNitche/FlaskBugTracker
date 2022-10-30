@@ -39,6 +39,12 @@ class IssuesValidationMixin:
         if not user:
             raise ValidationError(SystemMessagesConst.USER_DOESNT_EXIST)
 
+    def validate_title(self, title):
+        issue = models.Issue.query.filter_by(title=title.data).first()
+
+        if issue:
+            raise ValidationError(SystemMessagesConst.ISSUE_TITLE_TAKEN)
+
 
 class LoginForm(FormBase):
     email = StringField("Email", validators=[DataRequired()])
@@ -102,6 +108,18 @@ class AddIssueForm(FormBase, IssuesValidationMixin):
                                                           max=ValidationConsts.MAX_ISSUE_CONTENT_LENGTH)])
 
     assigned_to_user_name = SelectField("Assign To", choices=[])
+
+
+class AddProjectForm(FormBase):
+    name = StringField("Name", validators=[DataRequired(),
+                                           Length(min=ValidationConsts.MIN_PROJECT_NAME,
+                                                  max=ValidationConsts.MAX_PROJECT_NAME)])
+
+    def validate_name(self, name):
+        project = models.Project.query.filter_by(name=name.data).first()
+
+        if project:
+            raise ValidationError(SystemMessagesConst.PROJECT_NAME_TAKEN)
 
 
 class UpdateIssueForm(FormBase, IssuesValidationMixin):

@@ -4,6 +4,12 @@ from datetime import datetime
 from flask_bug_tracker.consts import PermissionGroupsConsts, ValidationConsts, IssuesConsts
 
 
+project_user = db.Table("project_user",
+                        db.Column("user_id", db.Integer, db.ForeignKey("users.id"), primary_key=True),
+                        db.Column("project_id", db.Integer, db.ForeignKey("projects.id"), primary_key=True)
+                        )
+
+
 class User(db.Model, UserMixin):
     __tablename__ = "users"
 
@@ -100,3 +106,19 @@ class UserActionLog(db.Model):
 
         return logs
 
+
+class Project(db.Model):
+    __tablename__ = "projects"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(ValidationConsts.MAX_PROJECT_NAME), unique=True, nullable=False)
+
+    created_date = db.Column(db.DateTime, unique=False, nullable=False, default=datetime.utcnow)
+
+    owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    members = db.relationship("User", secondary=project_user, backref="projects", lazy=True)
+
+    def get_owner_name(self):
+        user = User.query.filter_by(id=self.owner_id).first()
+
+        return user.username

@@ -40,3 +40,23 @@ def get_data_table_data_struct_for_issues(issues):
 
     return struct
 
+
+def get_data_table_data_struct_for_projects(projects):
+    headers = ["ID", "Name", "Owner", "Date", "Members Count"]
+    projects_struct = {}
+
+    for project in projects:
+        projects_struct[project.id] = [
+            project.id,
+            project.name,
+            project.get_owner_name(),
+            project.created_date,
+            len(project.members)
+        ]
+
+    struct = {
+            "headers": headers,
+            "content": projects_struct
+        }
+
+    return struct

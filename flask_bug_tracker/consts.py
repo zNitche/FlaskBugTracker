@@ -17,6 +17,12 @@ class SystemMessagesConst:
     ERROR_WHILE_UPDATING_ISSUE = "Error while updating issue details"
     ISSUE_REMOVED = "Issue has been removed successfully"
 
+    ISSUE_TITLE_TAKEN = "Issue title taken"
+    PROJECT_NAME_TAKEN = "Project name taken"
+
+    ADDED_PROJECT = "Project has been added successfully"
+    ERROR_WHILE_ADDING_PROJECT = "Error while adding project"
+
 
 class FlashConsts:
     FLASH_DANGER = "danger"
@@ -56,6 +62,9 @@ class ValidationConsts:
     MAX_ISSUE_NAME_LENGTH = 20
     MIN_ISSUE_CONTENT_LENGTH = 10
     MAX_ISSUE_CONTENT_LENGTH = 400
+
+    MIN_PROJECT_NAME = 2
+    MAX_PROJECT_NAME = 20
 
     MAX_USER_ACTION_LOG_LENGTH = 250
 
