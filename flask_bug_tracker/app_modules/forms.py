@@ -123,6 +123,11 @@ class AddProjectForm(FormBase):
 
 
 class UpdateIssueForm(FormBase, IssuesValidationMixin):
+    def __init__(self, current_issue_id):
+        super().__init__()
+
+        self.current_issue_id = current_issue_id
+
     title = StringField("Title", validators=[DataRequired(),
                                              Length(min=ValidationConsts.MIN_ISSUE_NAME_LENGTH,
                                                     max=ValidationConsts.MAX_ISSUE_NAME_LENGTH)])
@@ -134,6 +139,12 @@ class UpdateIssueForm(FormBase, IssuesValidationMixin):
     status = SelectField("Status", choices=IssuesConsts.ISSUES_STATUS_TYPES)
 
     assigned_to_user_name = SelectField("Assign To", choices=[])
+
+    def validate_title(self, title):
+        issue = models.Issue.query.filter_by(title=title.data).first()
+
+        if issue and self.current_issue_id != issue.id:
+            raise ValidationError(SystemMessagesConst.ISSUE_TITLE_TAKEN)
 
 
 class SearchIssueForm(FormBase):

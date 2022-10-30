@@ -82,7 +82,7 @@ def preview_issue(issue_id):
     if issue and (issues_utils.check_issue_access(issue, flask_login.current_user) or
                   flask_login.current_user.id == issue.assigned_to_user_id):
 
-        issue_form = forms.UpdateIssueForm()
+        issue_form = forms.UpdateIssueForm(issue.id)
 
         issue_form.title.data = issue.title
         issue_form.content.data = issue.content
@@ -104,7 +104,7 @@ def update_issue(issue_id):
     current_user = flask_login.current_user
 
     if issue and issues_utils.check_issue_access(issue, flask_login.current_user):
-        issue_form = forms.UpdateIssueForm()
+        issue_form = forms.UpdateIssueForm(issue.id)
 
         issue_form.assigned_to_user_name.choices = [user.username for user in models.User.query.all()]
 
