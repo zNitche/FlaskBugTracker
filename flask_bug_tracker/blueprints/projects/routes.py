@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, url_for, flash, request,redirect
+from flask import Blueprint, render_template, url_for, flash, request, redirect, abort
 import flask_login
 from flask_bug_tracker import models
 from flask_bug_tracker.consts import PaginationConsts, SystemMessagesConst, FlashConsts
-from flask_bug_tracker.utils import table_utils, db_utils
+from flask_bug_tracker.utils import table_utils, db_utils, projects_utils
 from flask_bug_tracker.app_modules import forms
 
 
@@ -70,3 +70,33 @@ def add_project():
         return redirect(url_for("projects.preview_my_projects"))
 
     return render_template("add_project.html", add_project_form=add_project_form)
+
+
+@projects.route("/project/<project_id>", methods=["GET"])
+@flask_login.login_required
+def preview_project(project_id):
+    project = models.Project.query.filter_by(id=project_id).first()
+
+    if project and (projects_utils.check_project_access(project, flask_login.current_user) or
+                    flask_login.current_user in project.members):
+
+        return render_template("project.html", project=project)
+
+    else:
+        abort(404)
+
+
+@projects.route("/project/<project_id>/remove", methods=["POST"])
+@flask_login.login_required
+def remove_project(project_id):
+    project = models.Project.query.filter_by(id=project_id).first()
+
+    if project and projects_utils.check_project_access(project, flask_login.current_user):
+        db_utils.remove_object_from_db(project)
+
+        flash(SystemMessagesConst.PROJECT_REMOVED, FlashConsts.FLASH_SUCCESS)
+
+        return redirect(url_for("projects.preview_my_projects"))
+
+    else:
+        abort(404)

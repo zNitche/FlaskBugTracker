@@ -22,6 +22,7 @@ class SystemMessagesConst:
 
     ADDED_PROJECT = "Project has been added successfully"
     ERROR_WHILE_ADDING_PROJECT = "Error while adding project"
+    PROJECT_REMOVED = "Project has been removed"
 
 
 class FlashConsts:

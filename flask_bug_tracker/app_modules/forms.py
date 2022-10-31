@@ -110,18 +110,6 @@ class AddIssueForm(FormBase, IssuesValidationMixin):
     assigned_to_user_name = SelectField("Assign To", choices=[])
 
 
-class AddProjectForm(FormBase):
-    name = StringField("Name", validators=[DataRequired(),
-                                           Length(min=ValidationConsts.MIN_PROJECT_NAME,
-                                                  max=ValidationConsts.MAX_PROJECT_NAME)])
-
-    def validate_name(self, name):
-        project = models.Project.query.filter_by(name=name.data).first()
-
-        if project:
-            raise ValidationError(SystemMessagesConst.PROJECT_NAME_TAKEN)
-
-
 class UpdateIssueForm(FormBase, IssuesValidationMixin):
     def __init__(self, current_issue_id):
         super().__init__()
@@ -149,3 +137,15 @@ class UpdateIssueForm(FormBase, IssuesValidationMixin):
 
 class SearchIssueForm(FormBase):
     status = SelectField("Status", choices=IssuesConsts.ISSUES_STATUS_TYPES_FOR_FILTER)
+
+
+class AddProjectForm(FormBase):
+    name = StringField("Name", validators=[DataRequired(),
+                                           Length(min=ValidationConsts.MIN_PROJECT_NAME,
+                                                  max=ValidationConsts.MAX_PROJECT_NAME)])
+
+    def validate_name(self, name):
+        project = models.Project.query.filter_by(name=name.data).first()
+
+        if project:
+            raise ValidationError(SystemMessagesConst.PROJECT_NAME_TAKEN)

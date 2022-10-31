@@ -1,0 +1,31 @@
+{% extends "base_templates/page_layout_base.html" %}
+{% block page_content %}
+
+<div class="content-item">
+    <div class="item-header">
+        <h2>
+            {{ project.name }}
+        </h2>
+    </div>
+    <div class="item-content">
+        <div>
+            Owner: {{ project.get_owner_name() }}
+        </div>
+        <div>
+            {% for member in project.members %}
+                <p>
+                    {{ member.username }}
+                </p>
+            {% endfor %}
+        </div>
+        {% if current_user.id == project.owner or current_user.is_admin() %}
+            <form class="default-form" action="{{ url_for('projects.remove_project', project_id=project.id) }}" method="POST">
+                <button class="form-remove-button" type="submit">
+                    Remove
+                </button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
