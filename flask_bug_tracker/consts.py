@@ -76,6 +76,7 @@ class PaginationConsts:
     USERS_PER_PAGE = 15
     ISSUES_PER_PAGE = 15
     LOGS_PER_HOME_PAGE = 20
+    PROJECTS_PER_PAGE = 15
 
 
 class UserActionsLogsConsts:

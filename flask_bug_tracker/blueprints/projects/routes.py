@@ -3,7 +3,7 @@ import flask_login
 from flask_bug_tracker import models
 from flask_bug_tracker.consts import PaginationConsts, SystemMessagesConst, FlashConsts
 from flask_bug_tracker.utils import table_utils, db_utils, projects_utils
-from flask_bug_tracker.app_modules import forms
+from flask_bug_tracker.app_modules import forms, decorators
 
 
 projects = Blueprint("projects", __name__, template_folder="templates", static_folder="static", url_prefix="/projects")
@@ -26,10 +26,23 @@ def home():
     if flask_login.current_user.is_admin():
         page_options.append({
             "content": "All Projects",
-            "url": "#"
+            "url": url_for('projects.preview_all_projects')
         })
 
     return render_template("navigation_page.html", page_options=page_options)
+
+
+@projects.route("/all", defaults={"page_id": 1}, methods=["GET", "POST"])
+@projects.route("/all/<int:page_id>", methods=["GET", "POST"])
+@flask_login.login_required
+@decorators.admin_required
+def preview_all_projects(page_id):
+    projects = models.Project.query.order_by(models.Project.created_date.desc())
+    projects = projects.paginate(page=page_id, per_page=PaginationConsts.PROJECTS_PER_PAGE)
+
+    table_struct = table_utils.get_data_table_data_struct_for_projects(projects.items)
+
+    return render_template("preview_projects.html", projects=projects, table_struct=table_struct)
 
 
 @projects.route("/my", defaults={"page_id": 1}, methods=["GET", "POST"])
@@ -41,7 +54,7 @@ def preview_my_projects(page_id):
     projects = models.Project.query.order_by(models.Project.created_date.desc()).filter(
         (models.Project.owner_id == current_user.id) | (models.Project.members.any(models.User.id == current_user.id)))
 
-    projects = projects.paginate(page=page_id, per_page=PaginationConsts.ISSUES_PER_PAGE)
+    projects = projects.paginate(page=page_id, per_page=PaginationConsts.PROJECTS_PER_PAGE)
 
     table_struct = table_utils.get_data_table_data_struct_for_projects(projects.items)
 
