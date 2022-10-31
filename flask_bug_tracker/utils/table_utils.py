@@ -19,14 +19,14 @@ def get_data_table_data_struct_for_users(users):
 
 
 def get_data_table_data_struct_for_issues(issues):
-    headers = ["ID", "Title", "Owner", "Assigned to", "Date", "Last Update", "Status"]
+    headers = ["ID", "Title", "Project", "Assigned to", "Date", "Last Update", "Status"]
     issues_struct = {}
 
     for issue in issues:
         issues_struct[issue.id] = [
             issue.id,
             issue.title,
-            issue.owner.username,
+            issue.project.name,
             issue.get_assigned_to_user_name(),
             issue.date,
             issue.last_updated,
@@ -42,7 +42,7 @@ def get_data_table_data_struct_for_issues(issues):
 
 
 def get_data_table_data_struct_for_projects(projects):
-    headers = ["ID", "Name", "Owner", "Date", "Members Count"]
+    headers = ["ID", "Name", "Owner", "Date", "Issues", "Members Count"]
     projects_struct = {}
 
     for project in projects:
@@ -51,6 +51,7 @@ def get_data_table_data_struct_for_projects(projects):
             project.name,
             project.get_owner_name(),
             project.created_date,
+            len(project.issues),
             len(project.members)
         ]
 

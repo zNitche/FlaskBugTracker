@@ -1,3 +1,4 @@
+from flask_login import current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, Optional
@@ -108,6 +109,13 @@ class AddIssueForm(FormBase, IssuesValidationMixin):
                                                           max=ValidationConsts.MAX_ISSUE_CONTENT_LENGTH)])
 
     assigned_to_user_name = SelectField("Assign To", choices=[])
+    project_name = SelectField("Project", choices=[])
+
+    def validate_project_name(self, project_name):
+        project = models.Project.query.filter_by(name=project_name.data).first()
+
+        if not (project and project in current_user.projects or current_user == project.owner):
+            raise ValidationError(SystemMessagesConst.CANT_ACCESS_PROJECT)
 
 
 class UpdateIssueForm(FormBase, IssuesValidationMixin):

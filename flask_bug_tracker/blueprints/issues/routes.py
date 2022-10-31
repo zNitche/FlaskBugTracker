@@ -3,7 +3,7 @@ import flask_login
 from datetime import datetime
 from flask_bug_tracker import models
 from flask_bug_tracker.app_modules import forms, decorators
-from flask_bug_tracker.utils import db_utils, table_utils, issues_utils, logs_utils
+from flask_bug_tracker.utils import db_utils, table_utils, issues_utils, logs_utils, projects_utils
 from flask_bug_tracker.consts import SystemMessagesConst, FlashConsts, PaginationConsts, IssuesConsts
 
 
@@ -163,15 +163,19 @@ def add_issue():
 
     user = flask_login.current_user
 
+    add_issue_form.project_name.choices = [project.name for project in projects_utils.get_projects_for_user(user)]
+
     if add_issue_form.validate_on_submit():
         title = add_issue_form.title.data
         content = add_issue_form.content.data
         assigned_to_user_name = add_issue_form.assigned_to_user_name.data
+        project_name = add_issue_form.project_name.data
 
         assigned_to_user_id = models.User.query.filter_by(username=assigned_to_user_name).first().id
+        project_id = models.Project.query.filter_by(name=project_name).first().id
 
         issue = models.Issue(title=title, content=content, assigned_to_user_id=assigned_to_user_id,
-                             owner_id=user.id)
+                             owner_id=user.id, project_id=project_id)
 
         db_utils.add_object_to_db(issue)
 

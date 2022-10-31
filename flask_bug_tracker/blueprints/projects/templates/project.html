@@ -18,6 +18,13 @@
                 </p>
             {% endfor %}
         </div>
+        <div>
+            {% for issue in project.issues %}
+                <p>
+                    #{{ issue.id }} {{ issue.title }}
+                </p>
+            {% endfor %}
+        </div>
         {% if current_user.id == project.owner or current_user.is_admin() %}
             <form class="default-form" action="{{ url_for('projects.remove_project', project_id=project.id) }}" method="POST">
                 <button class="form-remove-button" type="submit">

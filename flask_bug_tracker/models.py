@@ -18,9 +18,10 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(ValidationConsts.MAX_EMAIL_LENGTH), unique=True, nullable=True)
     password = db.Column(db.String(128), unique=False, nullable=False)
 
-    permission_group_id = db.Column(db.Integer, db.ForeignKey("permission_groups.id"), nullable=False)
-
     issues = db.relationship("Issue", backref="owner", lazy=True)
+    owned_projects = db.relationship("Project", backref="owner", lazy=True)
+
+    permission_group_id = db.Column(db.Integer, db.ForeignKey("permission_groups.id"), nullable=False)
 
     def is_admin(self):
         status = True if self.permission_group.name == PermissionGroupsConsts.ADMIN_GROUP else False
@@ -70,6 +71,8 @@ class Issue(db.Model):
     last_updated = db.Column(db.DateTime, unique=False, nullable=True, default=datetime.utcnow)
 
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    project_id = db.Column(db.Integer, db.ForeignKey("projects.id"), nullable=False)
+
     assigned_to_user_id = db.Column(db.Integer, unique=False, nullable=True, default=None)
 
     def get_assigned_to_user_name(self):
@@ -106,7 +109,9 @@ class Project(db.Model):
     created_date = db.Column(db.DateTime, unique=False, nullable=False, default=datetime.utcnow)
 
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+
     members = db.relationship("User", secondary=project_user, backref="projects", lazy=True)
+    issues = db.relationship("Issue", backref="project", lazy=True)
 
     def get_owner_name(self):
         user = User.query.filter_by(id=self.owner_id).first()

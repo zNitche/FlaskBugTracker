@@ -24,6 +24,8 @@ class SystemMessagesConst:
     ERROR_WHILE_ADDING_PROJECT = "Error while adding project"
     PROJECT_REMOVED = "Project has been removed"
 
+    CANT_ACCESS_PROJECT = "Cant access project"
+
 
 class FlashConsts:
     FLASH_DANGER = "danger"
