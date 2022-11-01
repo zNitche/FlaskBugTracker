@@ -80,7 +80,8 @@ def preview_issue(issue_id):
     issue = models.Issue.query.filter_by(id=issue_id).first()
 
     if issue and (issues_utils.check_issue_access(issue, flask_login.current_user) or
-                  flask_login.current_user.id == issue.assigned_to_user_id):
+                  flask_login.current_user.id == issue.assigned_to_user_id) or \
+            flask_login.current_user in issue.project.members:
 
         issue_form = forms.UpdateIssueForm(issue.id)
 
