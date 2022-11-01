@@ -18,7 +18,11 @@
 
             {% for member in project.members %}
                 <p>
-                    {{ member.username }}
+                    <form action="{{ url_for('projects.remove_project_member', project_name=project.name, member_email=member.email) }}" method="POST">
+                        {{ member.username }}
+
+                        <button type="submit">Remove</button>
+                    </form>
                 </p>
             {% endfor %}
         </div>

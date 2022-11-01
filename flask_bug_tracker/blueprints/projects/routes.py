@@ -148,3 +148,26 @@ def add_project_member(project_name):
 
     else:
         abort(404)
+
+
+@projects.route("/project/<project_name>/remove_member/<member_email>", methods=["POST"])
+@flask_login.login_required
+def remove_project_member(project_name, member_email):
+    project = models.Project.query.filter_by(name=project_name).first()
+    member = models.User.query.filter_by(email=member_email).first()
+
+    if project and projects_utils.check_project_access(project, flask_login.current_user) and member:
+        if member in project.members:
+            project.members.remove(member)
+
+            db_utils.commit_session()
+
+            flash(SystemMessagesConst.REMOVED_PROJECT_MEMBER, FlashConsts.FLASH_SUCCESS)
+
+        else:
+            flash(SystemMessagesConst.ERROR_WHILE_REMOVING_PROJECT_MEMBER, FlashConsts.FLASH_DANGER)
+
+        return redirect(url_for("projects.preview_project", project_name=project_name))
+
+    else:
+        abort(404)

@@ -26,6 +26,8 @@ class SystemMessagesConst:
     ERROR_WHILE_ADDING_PROJECT_MEMBER = "Error while adding project member"
     USER_IS_ALREADY_PROJECT_MEMBER = "User is already project member"
     ADDED_PROJECT_MEMBER = "Added project member"
+    REMOVED_PROJECT_MEMBER = "Removed project member"
+    ERROR_WHILE_REMOVING_PROJECT_MEMBER = "Error while removing project member"
 
     CANT_ACCESS_PROJECT = "Cant access project"
 
