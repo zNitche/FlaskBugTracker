@@ -1,3 +1,3 @@
 # FlaskBugTracker
 
-Bug Tracker app built using Flask
+Bug Tracker app created using Flask and MySQL

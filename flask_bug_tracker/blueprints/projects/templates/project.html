@@ -12,6 +12,10 @@
             Owner: {{ project.get_owner_name() }}
         </div>
         <div>
+            <a href="{{ url_for('projects.add_project_member', project_id=project.id) }}">
+                Add Project Member
+            </a>
+
             {% for member in project.members %}
                 <p>
                     {{ member.username }}

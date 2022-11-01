@@ -5,7 +5,6 @@ from flask_bug_tracker.consts import PaginationConsts, SystemMessagesConst, Flas
 from flask_bug_tracker.utils import table_utils, db_utils, projects_utils
 from flask_bug_tracker.app_modules import forms, decorators
 
-
 projects = Blueprint("projects", __name__, template_folder="templates", static_folder="static", url_prefix="/projects")
 
 
@@ -110,6 +109,41 @@ def remove_project(project_id):
         flash(SystemMessagesConst.PROJECT_REMOVED, FlashConsts.FLASH_SUCCESS)
 
         return redirect(url_for("projects.preview_my_projects"))
+
+    else:
+        abort(404)
+
+
+@projects.route("/project/<project_id>/add_member", methods=["GET", "POST"])
+@flask_login.login_required
+def add_project_member(project_id):
+    project = models.Project.query.filter_by(id=project_id).first()
+
+    if project and projects_utils.check_project_access(project, flask_login.current_user):
+        add_project_member_form = forms.AddProjectMember()
+
+        if request.method == "POST":
+            if add_project_member_form.validate_on_submit():
+                email = add_project_member_form.email.data
+                new_member = models.User.query.filter_by(email=email).first()
+
+                if new_member not in project.members and new_member.id != project.owner_id:
+                    project.members.append(new_member)
+
+                    db_utils.commit_session()
+
+                    flash(SystemMessagesConst.ADDED_PROJECT_MEMBER, FlashConsts.FLASH_SUCCESS)
+
+                    return redirect(url_for("projects.preview_project", project_id=project_id))
+
+                else:
+                    flash(SystemMessagesConst.USER_IS_ALREADY_PROJECT_MEMBER, FlashConsts.FLASH_DANGER)
+
+            else:
+                flash(SystemMessagesConst.ERROR_WHILE_ADDING_PROJECT_MEMBER, FlashConsts.FLASH_DANGER)
+
+        return render_template("add_project_member.html", project=project,
+                               add_project_member_form=add_project_member_form)
 
     else:
         abort(404)

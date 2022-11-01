@@ -157,3 +157,16 @@ class AddProjectForm(FormBase):
 
         if project:
             raise ValidationError(SystemMessagesConst.PROJECT_NAME_TAKEN)
+
+
+class AddProjectMember(FormBase):
+    email = StringField("Email", validators=[DataRequired(),
+                                             Length(min=ValidationConsts.MIN_EMAIL_LENGTH,
+                                                    max=ValidationConsts.MAX_EMAIL_LENGTH)])
+
+    def validate_email(self, email):
+        user = models.User.query.filter_by(email=email.data).first()
+
+        if not user:
+            raise ValidationError(SystemMessagesConst.USER_DOESNT_EXIST)
+

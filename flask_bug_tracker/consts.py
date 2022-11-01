@@ -23,6 +23,9 @@ class SystemMessagesConst:
     ADDED_PROJECT = "Project has been added successfully"
     ERROR_WHILE_ADDING_PROJECT = "Error while adding project"
     PROJECT_REMOVED = "Project has been removed"
+    ERROR_WHILE_ADDING_PROJECT_MEMBER = "Error while adding project member"
+    USER_IS_ALREADY_PROJECT_MEMBER = "User is already project member"
+    ADDED_PROJECT_MEMBER = "Added project member"
 
     CANT_ACCESS_PROJECT = "Cant access project"
 
