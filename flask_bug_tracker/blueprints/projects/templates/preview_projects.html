@@ -11,9 +11,9 @@
                     </th>
                 {% endfor %}
             </tr>
-            {% for project_id in table_struct['content'] %}
-                <tr onclick="window.location='{{ url_for('projects.preview_project', project_id=project_id) }}';">
-                    {% for data in table_struct['content'][project_id] %}
+            {% for project_name in table_struct['content'] %}
+                <tr onclick="window.location='{{ url_for('projects.preview_project', project_name=project_name) }}';">
+                    {% for data in table_struct['content'][project_name] %}
                         <td>
                             {{ data }}
                         </td>

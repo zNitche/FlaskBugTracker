@@ -5,6 +5,7 @@ from flask_bug_tracker.consts import PaginationConsts, SystemMessagesConst, Flas
 from flask_bug_tracker.utils import table_utils, db_utils, projects_utils
 from flask_bug_tracker.app_modules import forms, decorators
 
+
 projects = Blueprint("projects", __name__, template_folder="templates", static_folder="static", url_prefix="/projects")
 
 
@@ -84,10 +85,10 @@ def add_project():
     return render_template("add_project.html", add_project_form=add_project_form)
 
 
-@projects.route("/project/<project_id>", methods=["GET"])
+@projects.route("/project/<project_name>", methods=["GET"])
 @flask_login.login_required
-def preview_project(project_id):
-    project = models.Project.query.filter_by(id=project_id).first()
+def preview_project(project_name):
+    project = models.Project.query.filter_by(name=project_name).first()
 
     if project and (projects_utils.check_project_access(project, flask_login.current_user) or
                     flask_login.current_user in project.members):
@@ -98,10 +99,10 @@ def preview_project(project_id):
         abort(404)
 
 
-@projects.route("/project/<project_id>/remove", methods=["POST"])
+@projects.route("/project/<project_name>/remove", methods=["POST"])
 @flask_login.login_required
-def remove_project(project_id):
-    project = models.Project.query.filter_by(id=project_id).first()
+def remove_project(project_name):
+    project = models.Project.query.filter_by(name=project_name).first()
 
     if project and projects_utils.check_project_access(project, flask_login.current_user):
         db_utils.remove_object_from_db(project)
@@ -114,10 +115,10 @@ def remove_project(project_id):
         abort(404)
 
 
-@projects.route("/project/<project_id>/add_member", methods=["GET", "POST"])
+@projects.route("/project/<project_name>/add_member", methods=["GET", "POST"])
 @flask_login.login_required
-def add_project_member(project_id):
-    project = models.Project.query.filter_by(id=project_id).first()
+def add_project_member(project_name):
+    project = models.Project.query.filter_by(name=project_name).first()
 
     if project and projects_utils.check_project_access(project, flask_login.current_user):
         add_project_member_form = forms.AddProjectMember()
@@ -134,7 +135,7 @@ def add_project_member(project_id):
 
                     flash(SystemMessagesConst.ADDED_PROJECT_MEMBER, FlashConsts.FLASH_SUCCESS)
 
-                    return redirect(url_for("projects.preview_project", project_id=project_id))
+                    return redirect(url_for("projects.preview_project", project_name=project_name))
 
                 else:
                     flash(SystemMessagesConst.USER_IS_ALREADY_PROJECT_MEMBER, FlashConsts.FLASH_DANGER)

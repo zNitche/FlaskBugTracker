@@ -8,7 +8,7 @@
         </h2>
     </div>
     <div class="item-content">
-        <form action="{{ url_for('projects.add_project_member', project_id=project.id) }}" method="POST" class="default-form">
+        <form action="{{ url_for('projects.add_project_member', project_name=project.name) }}" method="POST" class="default-form">
             {% with form=add_project_member_form %}
                 {% include "components/form_component.html" %}
             {% endwith %}

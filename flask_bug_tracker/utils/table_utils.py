@@ -46,7 +46,7 @@ def get_data_table_data_struct_for_projects(projects):
     projects_struct = {}
 
     for project in projects:
-        projects_struct[project.id] = [
+        projects_struct[project.name] = [
             project.id,
             project.name,
             project.get_owner_name(),

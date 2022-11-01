@@ -12,7 +12,7 @@
             Owner: {{ project.get_owner_name() }}
         </div>
         <div>
-            <a href="{{ url_for('projects.add_project_member', project_id=project.id) }}">
+            <a href="{{ url_for('projects.add_project_member', project_name=project.name) }}">
                 Add Project Member
             </a>
 
@@ -32,7 +32,7 @@
             {% endfor %}
         </div>
         {% if current_user.id == project.owner or current_user.is_admin() %}
-            <form class="default-form" action="{{ url_for('projects.remove_project', project_id=project.id) }}" method="POST">
+            <form class="default-form" action="{{ url_for('projects.remove_project', project_name=project.name) }}" method="POST">
                 <button class="form-remove-button" type="submit">
                     Remove
                 </button>
