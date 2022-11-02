@@ -13,9 +13,11 @@
                 {% include "components/form_component.html" %}
             {% endwith %}
 
-            <button class="form-add-button" type="submit">
-                Update
-            </button>
+            {% if current_user.id == issue.project.owner or current_user.is_admin() %}
+                <button class="form-add-button" type="submit">
+                    Update
+                </button>
+            {% endif %}
         </form>
         {% if current_user.id == issue.owner or current_user.is_admin() %}
             <form class="default-form" action="{{ url_for('issues.remove_issue', issue_id=issue.id) }}" method="POST">

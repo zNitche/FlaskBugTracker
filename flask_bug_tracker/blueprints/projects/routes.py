@@ -93,7 +93,9 @@ def preview_project(project_name):
     if project and (projects_utils.check_project_access(project, flask_login.current_user) or
                     flask_login.current_user in project.members):
 
-        return render_template("project.html", project=project)
+        issues_struct = table_utils.get_data_table_data_struct_for_project_issues(project.issues)
+
+        return render_template("project.html", project=project, issues_struct=issues_struct)
 
     else:
         abort(404)

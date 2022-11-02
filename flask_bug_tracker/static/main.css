@@ -360,6 +360,41 @@ button[type="submit"] {
     background-color: #2bde10;
 }
 
+.active-collapsible {
+    display: flex !important;
+}
+
+.collapsible-content {
+    display: none;
+    flex-direction: column;
+}
+
+.remove-member-button {
+    background-color: red;
+}
+
+.members-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.member-container {
+    padding: 10px;
+    background-color: #f5f5f5;
+}
+
+.collapsible-toggle-button {
+    width: 100%;
+    padding: 5px;
+}
+
+.project-issues-table-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
 
 @media screen and (max-width: 1000px) {
   .login-container {
@@ -383,6 +418,6 @@ button[type="submit"] {
   }
 
   .item-content {
-   width: 90%;
-}
+    width: 90%;
+   }
 }

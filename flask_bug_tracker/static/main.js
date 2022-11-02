@@ -3,3 +3,10 @@ function toggleNavbarDropdown() {
 
     dropdown.classList.toggle("displayed");
 }
+
+
+function toggleCollapsible(collapsibleContentID) {
+    const collapsibleContent = document.getElementById(collapsibleContentID);
+
+    collapsibleContent.classList.toggle("active-collapsible");
+}

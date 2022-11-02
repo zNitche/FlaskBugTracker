@@ -11,29 +11,55 @@
         <div>
             Owner: {{ project.get_owner_name() }}
         </div>
-        <div>
-            <a href="{{ url_for('projects.add_project_member', project_name=project.name) }}">
-                Add Project Member
-            </a>
-
-            {% for member in project.members %}
+        <button type="button" class="collapsible-toggle-button" onclick="toggleCollapsible('members-collapsible');">
+            Members
+        </button>
+        <div id="members-collapsible" class="collapsible-content">
+            {% if current_user.id == project.owner or current_user.is_admin() %}
                 <p>
-                    <form action="{{ url_for('projects.remove_project_member', project_name=project.name, member_email=member.email) }}" method="POST">
-                        {{ member.username }}
-
-                        <button type="submit">Remove</button>
-                    </form>
+                    <a href="{{ url_for('projects.add_project_member', project_name=project.name) }}">
+                        Add Project Member
+                    </a>
                 </p>
-            {% endfor %}
+            {% endif %}
+
+            {% if project.members|length > 0 %}
+                 <div class="members-container">
+                    {% for member in project.members %}
+                        <div class="member-container">
+                            <form action="{{ url_for('projects.remove_project_member', project_name=project.name, member_email=member.email) }}" method="POST">
+                                {{ member.username }}
+
+                                {% if current_user.id == project.owner or current_user.is_admin() %}
+                                    <button class="remove-member-button" type="submit">
+                                        Remove
+                                    </button>
+                                {% endif %}
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
-        <div>
-            {% for issue in project.issues %}
-                <a href="{{ url_for('issues.preview_issue', issue_id=issue.id) }}">
-                    <p>
-                        #{{ issue.id }} {{ issue.title }}
-                    </p>
-                </a>
-            {% endfor %}
+        <div class="project-issues-table-container">
+            <table class="data-table">
+                <tr>
+                    {% for header in issues_struct['headers'] %}
+                        <th>
+                            {{ header }}
+                        </th>
+                    {% endfor %}
+                </tr>
+                {% for issue_id in issues_struct['content'] %}
+                    <tr onclick="window.location='{{ url_for('issues.preview_issue', issue_id=issue_id) }}';">
+                        {% for data in issues_struct['content'][issue_id] %}
+                            <td>
+                                {{ data }}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
         </div>
         {% if current_user.id == project.owner or current_user.is_admin() %}
             <form class="default-form" action="{{ url_for('projects.remove_project', project_name=project.name) }}" method="POST">
