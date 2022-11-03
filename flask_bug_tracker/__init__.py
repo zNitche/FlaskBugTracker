@@ -40,6 +40,7 @@ def register_blueprints(app):
     from flask_bug_tracker.blueprints.admin.routes import admin
     from flask_bug_tracker.blueprints.issues.routes import issues
     from flask_bug_tracker.blueprints.projects.routes import projects
+    from flask_bug_tracker.blueprints.download.routes import download
 
     app.register_blueprint(main_app)
     app.register_blueprint(auth)
@@ -47,6 +48,7 @@ def register_blueprints(app):
     app.register_blueprint(errors)
     app.register_blueprint(issues)
     app.register_blueprint(projects)
+    app.register_blueprint(download)
 
 
 def create_app():
