@@ -3,3 +3,4 @@ __pycache__/
 .env
 database/
 migrations/
+.pytest_cache/

@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 import flask_migrate
 import flask_login
 import os
+from config import Config
 from flask_bug_tracker.consts import PermissionGroupsConsts
 
 
@@ -51,11 +52,11 @@ def register_blueprints(app):
     app.register_blueprint(download)
 
 
-def create_app():
+def create_app(config_class=Config):
     app = Flask(__name__, instance_relative_config=False)
 
     app.secret_key = os.urandom(25)
-    app.config.from_object("config.Config")
+    app.config.from_object(config_class)
 
     db.init_app(app)
 
@@ -73,7 +74,9 @@ def create_app():
 
         init_database_data()
 
-        init_migrations(app)
+        if not app.config["TESTING"]:
+            init_migrations(app)
+
         register_blueprints(app)
 
         return app
