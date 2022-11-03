@@ -388,6 +388,30 @@ button[type="submit"] {
     padding: 5px;
 }
 
+.buttons-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.btn {
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+}
+
+.download-button {
+    background: #198754;
+}
+
+.download-button:hover {
+    background-color: #1fad6b;
+}
+
 .project-issues-table-container {
     display: flex;
     flex-direction: column;
