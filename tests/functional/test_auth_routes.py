@@ -15,13 +15,13 @@ def test_login(test_client):
     assert response.request.path == url_for("main_app.home")
 
 
-def test_logout(logged_test_user):
-    response = logged_test_user.get(url_for("auth.logout"), follow_redirects=True)
+def test_logout(test_client, logged_test_admin):
+    response = test_client.get(url_for("auth.logout"), follow_redirects=True)
 
     assert response.status_code == 200
     assert response.request.path == url_for("auth.login")
 
-    response = logged_test_user.get(url_for("main_app.home"), follow_redirects=True)
+    response = test_client.get(url_for("main_app.home"), follow_redirects=True)
 
     assert response.status_code == 200
     assert response.request.path == url_for("auth.login")

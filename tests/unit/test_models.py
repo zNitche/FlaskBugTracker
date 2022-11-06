@@ -4,14 +4,14 @@ from flask_bug_tracker.consts import PermissionGroupsConsts, IssuesConsts
 def test_new_admin_user(new_admin_user):
     assert new_admin_user.username == "test_admin_user"
     assert new_admin_user.email == "test_admin_user@email.com"
-    assert new_admin_user.password == "test_password"
+    assert new_admin_user.password == "test_pass"
     assert new_admin_user.permission_group_id == PermissionGroupsConsts.ADMIN_GROUP_ID
 
 
 def test_new_regular_user(new_regular_user):
     assert new_regular_user.username == "test_user"
     assert new_regular_user.email == "test_user@email.com"
-    assert new_regular_user.password == "test_password"
+    assert new_regular_user.password == "test_pass"
     assert new_regular_user.permission_group_id == PermissionGroupsConsts.USER_GROUP_ID
 
 
