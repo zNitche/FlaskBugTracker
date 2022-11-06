@@ -6,11 +6,14 @@ from flask_bug_tracker.utils import account_utils
 from flask_bug_tracker.consts import PermissionGroupsConsts, IssuesConsts
 from flask_bug_tracker import create_app
 from tests.test_config import TestConfig
+from tests.consts import UsersConsts
 
 
 @pytest.fixture(scope="function")
 def new_admin_user():
-    user = models.User(username="test_admin_user", email="test_admin_user@email.com", password="test_pass",
+    user = models.User(username=UsersConsts.TEST_ADMIN_USER_NAME,
+                       email=UsersConsts.TEST_ADMIN_USER_EMAIL,
+                       password=UsersConsts.TEST_ADMIN_USER_PASSWORD,
                        permission_group_id=PermissionGroupsConsts.ADMIN_GROUP_ID)
 
     return user
@@ -18,7 +21,9 @@ def new_admin_user():
 
 @pytest.fixture(scope="function")
 def new_regular_user():
-    user = models.User(username="test_user", email="test_user@email.com", password="test_pass",
+    user = models.User(username=UsersConsts.TEST_USER_NAME,
+                       email=UsersConsts.TEST_USER_EMAIL,
+                       password=UsersConsts.TEST_USER_PASSWORD,
                        permission_group_id=PermissionGroupsConsts.USER_GROUP_ID)
 
     return user
@@ -56,6 +61,16 @@ def test_client():
     client = flask_app.test_client()
 
     with flask_app.test_request_context():
+        user = models.User(username=UsersConsts.TEST_USER_NAME,
+                           email=UsersConsts.TEST_USER_EMAIL,
+                           password=UsersConsts.TEST_USER_PASSWORD,
+                           permission_group_id=PermissionGroupsConsts.USER_GROUP_ID)
+
+        user.password = account_utils.hash_password(user.password)
+
+        db.session.add(user)
+        db.session.commit()
+
         yield client
 
 
@@ -75,17 +90,12 @@ def logged_test_admin(test_client):
 
 
 @pytest.fixture(scope="function")
-def logged_test_user(test_client, new_regular_user):
+def logged_test_user(test_client):
     from flask_bug_tracker.app_modules import forms
 
-    new_regular_user.password = account_utils.hash_password(new_regular_user.password)
-
-    db.session.add(new_regular_user)
-    db.session.commit()
-
     form = forms.LoginForm()
-    form.email.data = new_regular_user.email
-    form.password.data = "test_pass"
+    form.email.data = UsersConsts.TEST_USER_EMAIL
+    form.password.data = UsersConsts.TEST_USER_PASSWORD
 
     test_client.post(url_for("auth.login"), data=form.data, follow_redirects=True)
 
