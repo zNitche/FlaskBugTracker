@@ -8,8 +8,8 @@ Bug Tracker app created using Flask and MySQL, supporting:
 - Projects management.
 - Issues management.
 - Assign users to issues.
-- Filtering Issues by status.
-- Downloading Project reports.
+- Filtering issues by status.
+- Downloading project reports.
 
 ---
 
